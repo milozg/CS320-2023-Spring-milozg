@@ -75,7 +75,7 @@ fun int2str(i0: int): string =
                     ds ^ d1
                 end;
 
-val i2st1 = int2str(430);
+(* val i2st1 = int2str(430); *)
 
 (*
 Assign00-04: 10 points

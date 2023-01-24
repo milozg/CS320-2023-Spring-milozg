@@ -4,10 +4,12 @@ Assign00: Warmup!
 *)
 (* ****** ****** *)
 
-(*
+use "assign00-lib.sml";
+
+
 fun fact(x: int): int =
   if x > 0 then x * fact(x-1) else 1
-*)
+
 
 (*
 Assign00-01: 10 points
@@ -16,7 +18,15 @@ evaluation of fact(N) in SML/NJ yields an Overflow
 exception.
 *)
 
-(* ****** ****** *)
+fun findOver(x: int) : int =
+    fact(x) handle Overflow => 0;
+
+fun findN(x: int) : int =
+    case findOver(x) of
+        0 => x
+      | _ => findN(x+1)
+
+val n = findN(0);
 
 (*
 Assign00-02: 10 points

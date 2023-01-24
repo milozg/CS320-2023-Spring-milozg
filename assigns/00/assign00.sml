@@ -111,6 +111,6 @@ fun stringrev(cs: string): string =
                   n ^ m
               end;
 
-val srt1 = stringrev("abcdef");
+(* val srt1 = stringrev("abcdef"); *)
 
 (* end of [CS320-2023-Spring-assign00.sml] *)

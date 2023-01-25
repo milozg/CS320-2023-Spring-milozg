@@ -1,0 +1,75 @@
+Test Outputs
+
+(base) crc-dot1x-nat-10-239-1-127:Testing milozg$ sh /Users/milozg/CS320-2023-Spring-milozg/assigns/00/Testing/testall.sh 
+Standard ML of New Jersey (64-bit) v110.99.3 [built: Thu Jul 28 00:35:16 2022]
+- [opening ./../MySolution/assign00-01.sml]
+val fact = fn : int -> int
+val findOver = fn : int -> int
+val findN = fn : unit -> int
+val N = 21 : int
+val it = () : unit
+= Assign00-01-test passed!
+
+Standard ML of New Jersey (64-bit) v110.99.3 [built: Thu Jul 28 00:35:16 2022]
+- [opening ./../MySolution/assign00-02.sml]
+val firstFactor = fn : int * int -> int
+val isPrime = fn : int -> bool
+val it = () : unit
+= Assign00-02-test passed!
+
+Standard ML of New Jersey (64-bit) v110.99.3 [built: Thu Jul 28 00:35:16 2022]
+- [opening ./../MySolution/assign00-03.sml]
+[opening ../assign00-lib.sml]
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val ord = fn : char -> int
+val chr = fn : int -> char
+val str = fn : char -> string
+val strlen = fn : string -> int
+val strcat = fn : string * string -> string
+val strsub = fn : string * int -> char
+val it = () : unit
+val int2str = fn : int -> string
+val it = () : unit
+= Assign00-03-test passed!
+
+Standard ML of New Jersey (64-bit) v110.99.3 [built: Thu Jul 28 00:35:16 2022]
+- [opening ./../MySolution/assign00-04.sml]
+[opening ../assign00-lib.sml]
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val ord = fn : char -> int
+val chr = fn : int -> char
+val str = fn : char -> string
+val strlen = fn : string -> int
+val strcat = fn : string * string -> string
+val strsub = fn : string * int -> char
+val it = () : unit
+val removeLast = fn : string -> string
+val str2int = fn : string -> int
+val it = () : unit
+= Assign00-04-test passed!
+
+Standard ML of New Jersey (64-bit) v110.99.3 [built: Thu Jul 28 00:35:16 2022]
+- [opening ./../MySolution/assign00-05.sml]
+[opening ../assign00-lib.sml]
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val ord = fn : char -> int
+val chr = fn : int -> char
+val str = fn : char -> string
+val strlen = fn : string -> int
+val strcat = fn : string * string -> string
+val strsub = fn : string * int -> char
+val it = () : unit
+val removeFirst = fn : string -> string
+val stringrev = fn : string -> string
+val it = () : unit
+= Assign00-05-test passed!
+

@@ -1,4 +1,4 @@
-use "assign00-lib.sml";
+use "../assign00-lib.sml";
 
 fun int2str(i0: int): string =
     case (i0 - 10) < 0 of

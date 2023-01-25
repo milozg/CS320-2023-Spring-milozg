@@ -12,10 +12,14 @@ exception.
 fun findOver(x: int) : int =
     fact(x) handle Overflow => 0;
 
-fun findN(x: int) : int =
-    case findOver(x) of
-        0 => x
-      | _ => findN(x+1)
+fun findN() : int =
+    let
+        fun help(x : int) : int =
+            case findOver(x) of
+                0 => x
+              | _ => help(x+1)
+    in
+        help(0)
+    end
 
-
-val N = findN(0);
+val N = findN();

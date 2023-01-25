@@ -1,3 +1,5 @@
+use "assign00-lib.sml";
+
 fun removeFirst(s : string, l : int) : string =
     case l - 1 of
         0 => ""

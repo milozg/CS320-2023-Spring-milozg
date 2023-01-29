@@ -93,8 +93,8 @@ fun xlist_remove_reverse(xs: 'a xlist): 'a xlist
 //
 In particular, your implementation should guarantee:
 1. 'xs' and 'ys' represent the same list
-2. 'ys' does NOT make any use of 'mylist_reverse'
-3. 'xs' and 'ys' use the same number of 'mylist_append'
+2. 'ys' does NOT make any use of 'xlist_reverse'
+3. 'xs' and 'ys' use the same number of 'xlist_append'
 //
 *)
   
@@ -118,22 +118,6 @@ mean a string consisting of a non-empty sequence of digits (where
 the digit '0' can be a leading digit).
 //
 fun str2int_opt(cs: string): int option
-//
-*)
-
-(* ****** ****** *)
-
-(*
-//
-Assign01-05: 10 points
-//
-Please implement a function that checks DIRECTLY
-if a given int xlist is sorted/ordered ascendingly:
-//
-fun xlist_sortedq(xs: int xlist): bool
-//
-You should NOT convert xlist into list
-and then check whether the converted list is sorted.
 //
 *)
 

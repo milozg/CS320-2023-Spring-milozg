@@ -53,4 +53,19 @@ and then compute the size of the converted list
 //
 *)
 
-(* ****** ****** *)
+fun xlist_size(xs : 'a xlist) : int =
+    let
+        fun loop(xs : 'a xlist, i : int) : int =
+            case xs of
+            xlist_nil => i
+            |
+            xlist_cons(x1, xs) => loop(xs,i+1)
+            |
+            xlist_snoc(xs, x1) => loop(xs,i+1)
+            |
+            xlist_append(xs, ys) => loop(xs,i) + loop(ys,0)
+            |
+            xlist_reverse(xs) => loop(xs,i)
+    in
+        loop(xs,0)
+    end

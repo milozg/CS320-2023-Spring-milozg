@@ -60,18 +60,30 @@ fun str2int_opt(cs: string): int option
 //
 *)
 
-fun removeLast(s : string) : string =
+datatype int_opt_lst =
+    int_opt_lst_nil
+    |
+    int_opt_lst_sng of int
+    |
+    int_opt_lst_snoc of (int_opt_lst * int)
+
+fun check_num(i : int) : bool =
+    if i >= 48 andalso i <= 57 then true else false
+
+fun str2int_opt_lst (s : string) : int_opt_lst =
     let
-    fun help(i : int,cs : string,l : int) : string =
-        case i >= (l-1) of
-            true => ""
-          |false => str(strsub(s,i)) ^ help(i+1,s,l)
+        fun help(i : int,cs : string,l : int) : int_opt_lst =
+            case l of
+                0 => int_opt_lst_nil
+              | 1 => case check_num(ord(strsub(cs,0))) of
+                        false => int_opt_lst_nil
+                       |true  => int_opt_lst_sng(ord(strsub(cs,0)) - 48)
+              | _ => case check_num(ord(strsub(cs,strlen(cs)-1))) of
+                        false => 
     in
         help(0,s,strlen(s))
     end
 
-fun check_num(i : int) : bool =
-    if i >= 48 andalso i <= 57 then true else false
 
 fun str2int_opt(cs: string): int option =
     case cs of

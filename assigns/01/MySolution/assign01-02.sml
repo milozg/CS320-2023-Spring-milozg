@@ -1,4 +1,4 @@
-use "./assign01-lib.sml";
+use "../assign01-lib.sml";
 (* ****** ****** *)
 val list_append = op@
 val list_reverse = List.rev
@@ -56,4 +56,16 @@ then do subscripting.
 //
 *)
 
-(* ****** ****** *)
+fun xlist_sub(xs: 'a xlist, i0: int): 'a =
+    let
+        fun loop(xs : 'a xlist, i0 : int, j : int) : 'a =
+            case xs of
+            xlist_nil => raise XlistSubscript
+            |
+            xlist_cons(x1, xs) => if j = i0 then x1 else loop(xs,i0,j + 1)
+            |
+            xlist_snoc(xs, x1) => list_of_xlist(xs) @ [x1]
+            |
+            xlist_append(xs, ys) => list_of_xlist(xs) @ list_of_xlist(ys)
+            |
+            xlist_reverse(xs) => list_reverse(list_of_xlist(xs))

@@ -1,4 +1,4 @@
-use "./assign01-lib.sml";
+use "../assign01-lib.sml";
 (* ****** ****** *)
 val list_append = op@
 val list_reverse = List.rev
@@ -60,4 +60,26 @@ fun str2int_opt(cs: string): int option
 //
 *)
 
-(* ****** ****** *)
+fun removeLast(s : string) : string =
+    let
+    fun help(i : int,cs : string,l : int) : string =
+        case i >= (l-1) of
+            true => ""
+          |false => str(strsub(s,i)) ^ help(i+1,s,l)
+    in
+        help(0,s,strlen(s))
+    end
+
+fun check_num(i : int) : bool =
+    if i >= 48 andalso i <= 57 then true else false
+
+fun str2int_opt(cs: string): int option =
+    case cs of
+        "" => SOME(0)
+       | _ => let val q = (ord(strsub(cs,(strlen(cs)-1))) - 48)
+                  val r = str2int_opt(removeLast(cs))
+              in
+                    case check_num(q) of
+                        true => SOME(q + (10 * r))
+                       |false => NONE
+              end

@@ -1,4 +1,5 @@
 use "../assign01-lib.sml";
+use "../../00/assign00-lib.sml";
 (* ****** ****** *)
 val list_append = op@
 val list_reverse = List.rev
@@ -60,38 +61,44 @@ fun str2int_opt(cs: string): int option
 //
 *)
 
-datatype int_opt_lst =
-    int_opt_lst_nil
-    |
-    int_opt_lst_sng of int
-    |
-    int_opt_lst_snoc of (int_opt_lst * int)
-
 fun check_num(i : int) : bool =
-    if i >= 48 andalso i <= 57 then true else false
+    if (i >= 48 andalso i <= 57) then true else false
 
-fun str2int_opt_lst (s : string) : int_opt_lst =
+fun removeLast(s : string) : string =
     let
-        fun help(i : int,cs : string,l : int) : int_opt_lst =
-            case l of
-                0 => int_opt_lst_nil
-              | 1 => case check_num(ord(strsub(cs,0))) of
-                        false => int_opt_lst_nil
-                       |true  => int_opt_lst_sng(ord(strsub(cs,0)) - 48)
-              | _ => case check_num(ord(strsub(cs,strlen(cs)-1))) of
-                        false => 
+        fun help(i : int,cs : string,l : int) : string =
+            case i >= (l-1) of
+                true => ""
+              |false => str(strsub(s,i)) ^ help(i+1,s,l)
     in
         help(0,s,strlen(s))
     end
 
+fun check_string(s : string) : bool =
+    let
+        fun loop(i : int, s : string, l : int) : bool =
+            case i < l of
+                false => true
+                |true => check_num(ord(strsub(s,i))) andalso loop(i+1,s,l)
+        val l = strlen(s)
+    in
+        case l = 0 of
+            true => false
+           |false => loop(0,s,l)
+    end
 
 fun str2int_opt(cs: string): int option =
-    case cs of
-        "" => SOME(0)
-       | _ => let val q = (ord(strsub(cs,(strlen(cs)-1))) - 48)
-                  val r = str2int_opt(removeLast(cs))
-              in
-                    case check_num(q) of
-                        true => SOME(q + (10 * r))
-                       |false => NONE
-              end
+    let
+        fun execute(cs:string) : int =
+            case cs of
+                "" => 0
+                | _ => let val q = (ord(strsub(cs,(strlen(cs)-1))) - 48)
+                           val r = execute(removeLast(cs))
+                       in
+                            q + (10 * r)
+                       end
+    in
+        case check_string(cs) of
+            false => NONE
+           |true  => SOME(execute(cs))
+    end

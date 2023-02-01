@@ -1,0 +1,238 @@
+- use "assign01-01-test.sml";
+[opening assign01-01-test.sml]
+[opening ./../../../mysmlib/mysmlib-cls.sml]
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+type 'a optn = 'a option
+exception ERROR320 of string optn
+exception ConsMatch320
+exception OptnSubscript320
+exception ListSubscript320
+val assert320 = fn : bool -> unit
+val assert320_some = fn : bool * string -> unit
+val char_of_digit = fn : int -> char
+val print_int = fn : int -> unit
+val print_char = fn : char -> unit
+val list_is_nil = fn : 'a list -> bool
+val list_is_cons = fn : 'a list -> bool
+val list_unnil = fn : 'a list -> unit
+val list_uncons = fn : 'a list -> 'a * 'a list
+val optn_is_none = fn : 'a optn -> bool
+val optn_is_some = fn : 'a optn -> bool
+val optn_unnone = fn : 'a optn -> unit
+val optn_unsome = fn : 'a optn -> 'a
+val it = () : unit
+[opening ./../MySolution/assign01-01.sml]
+[opening ../assign01-lib.sml]
+[autoloading]
+[autoloading done]
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+val it = () : unit
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+exception XlistConsMatch
+exception XlistSubscript
+datatype 'a xlist
+  = xlist_append of 'a xlist * 'a xlist
+  | xlist_cons of 'a * 'a xlist
+  | xlist_nil
+  | xlist_reverse of 'a xlist
+  | xlist_snoc of 'a xlist * 'a
+val list_of_xlist = fn : 'a xlist -> 'a list
+val xlist_size = fn : 'a xlist -> int
+val it = () : unit
+Assign01-01-test passed!
+val list_size = fn : 'a list -> int
+val xs = <hidden> : 'a xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs =
+  xlist_append
+    (xlist_reverse
+       (xlist_snoc
+          (xlist_cons (1,xlist_append (xlist_reverse #,xlist_reverse #)),2)),
+     xlist_reverse
+       (xlist_snoc
+          (xlist_cons (1,xlist_append (xlist_reverse #,xlist_reverse #)),2)))
+  : int xlist
+val it = () : unit
+
+
+- use "assign01-02-test.sml";
+[opening assign01-02-test.sml]
+[opening ./../../../mysmlib/mysmlib-cls.sml]
+type 'a optn = 'a option
+exception ERROR320 of string optn
+exception ConsMatch320
+exception OptnSubscript320
+exception ListSubscript320
+val assert320 = fn : bool -> unit
+val assert320_some = fn : bool * string -> unit
+val char_of_digit = fn : int -> char
+val print_int = fn : int -> unit
+val print_char = fn : char -> unit
+val list_is_nil = fn : 'a list -> bool
+val list_is_cons = fn : 'a list -> bool
+val list_unnil = fn : 'a list -> unit
+val list_uncons = fn : 'a list -> 'a * 'a list
+val optn_is_none = fn : 'a optn -> bool
+val optn_is_some = fn : 'a optn -> bool
+val optn_unnone = fn : 'a optn -> unit
+val optn_unsome = fn : 'a optn -> 'a
+val it = () : unit
+[opening ./../MySolution/assign01-02.sml]
+[opening ../assign01-lib.sml]
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+val it = () : unit
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+exception XlistConsMatch
+exception XlistSubscript
+datatype 'a xlist
+  = xlist_append of 'a xlist * 'a xlist
+  | xlist_cons of 'a * 'a xlist
+  | xlist_nil
+  | xlist_reverse of 'a xlist
+  | xlist_snoc of 'a xlist * 'a
+val list_of_xlist = fn : 'a xlist -> 'a list
+val xlist_size = fn : 'a xlist -> int
+val rev = fn : 'a xlist -> 'a xlist
+val xlist_sub = fn : 'a xlist * int -> 'a
+val it = () : unit
+Assign01-02-test passed!
+val list_size = fn : 'a list -> int
+val xs = <hidden> : 'a xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs =
+  xlist_append
+    (xlist_reverse
+       (xlist_snoc
+          (xlist_cons (1,xlist_append (xlist_reverse #,xlist_reverse #)),2)),
+     xlist_reverse
+       (xlist_snoc
+          (xlist_cons (1,xlist_append (xlist_reverse #,xlist_reverse #)),2)))
+  : int xlist
+val it = () : unit
+
+
+- use "assign01-03-test.sml";
+[opening assign01-03-test.sml]
+[opening ./../../../mysmlib/mysmlib-cls.sml]
+type 'a optn = 'a option
+exception ERROR320 of string optn
+exception ConsMatch320
+exception OptnSubscript320
+exception ListSubscript320
+val assert320 = fn : bool -> unit
+val assert320_some = fn : bool * string -> unit
+val char_of_digit = fn : int -> char
+val print_int = fn : int -> unit
+val print_char = fn : char -> unit
+val list_is_nil = fn : 'a list -> bool
+val list_is_cons = fn : 'a list -> bool
+val list_unnil = fn : 'a list -> unit
+val list_uncons = fn : 'a list -> 'a * 'a list
+val optn_is_none = fn : 'a optn -> bool
+val optn_is_some = fn : 'a optn -> bool
+val optn_unnone = fn : 'a optn -> unit
+val optn_unsome = fn : 'a optn -> 'a
+val it = () : unit
+[opening ./../MySolution/assign01-03.sml]
+[opening ../assign01-lib.sml]
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+val it = () : unit
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+exception XlistConsMatch
+exception XlistSubscript
+datatype 'a xlist
+  = xlist_append of 'a xlist * 'a xlist
+  | xlist_cons of 'a * 'a xlist
+  | xlist_nil
+  | xlist_reverse of 'a xlist
+  | xlist_snoc of 'a xlist * 'a
+val list_of_xlist = fn : 'a xlist -> 'a list
+val xlist_remove_reverse = fn : 'a xlist -> 'a xlist
+val it = () : unit
+Assign01-03-test passed!
+val list_size = fn : 'a list -> int
+val nappend = fn : 'a xlist -> int
+val nreverse = fn : 'a xlist -> int
+val xs = <hidden> : 'a xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val ys = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs = <hidden> : int xlist
+val xs =
+  xlist_append
+    (xlist_reverse
+       (xlist_snoc
+          (xlist_cons (1,xlist_append (xlist_reverse #,xlist_reverse #)),2)),
+     xlist_reverse
+       (xlist_snoc
+          (xlist_cons (1,xlist_append (xlist_reverse #,xlist_reverse #)),2)))
+  : int xlist
+val ys =
+  xlist_append
+    (xlist_cons
+       (2,xlist_snoc (xlist_append (xlist_snoc (#,#),xlist_snoc (#,#)),1)),
+     xlist_cons
+       (2,xlist_snoc (xlist_append (xlist_snoc (#,#),xlist_snoc (#,#)),1)))
+  : int xlist
+val it = () : unit
+
+
+
+- use "assign01-04-test.sml";
+[opening assign01-04-test.sml]
+[opening ./../MySolution/assign01-04.sml]
+[opening ../assign01-lib.sml]
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+val it = () : unit
+[opening ../../00/assign00-lib.sml]
+val ord = fn : char -> int
+val chr = fn : int -> char
+val str = fn : char -> string
+val strlen = fn : string -> int
+val strcat = fn : string * string -> string
+val strsub = fn : string * int -> char
+val it = () : unit
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_reverse = fn : 'a list -> 'a list
+exception XlistConsMatch
+exception XlistSubscript
+datatype 'a xlist
+  = xlist_append of 'a xlist * 'a xlist
+  | xlist_cons of 'a * 'a xlist
+  | xlist_nil
+  | xlist_reverse of 'a xlist
+  | xlist_snoc of 'a xlist * 'a
+val list_of_xlist = fn : 'a xlist -> 'a list
+val check_num = fn : int -> bool
+val removeLast = fn : string -> string
+val check_string = fn : string -> bool
+val str2int_opt = fn : string -> int option
+val it = () : unit
+Assign01-04-test passed!
+val it = () : unit

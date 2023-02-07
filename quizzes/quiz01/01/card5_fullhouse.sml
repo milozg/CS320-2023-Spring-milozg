@@ -172,8 +172,32 @@ fun card5_fullhouse(cs: card5): bool
 //
 *)
 
-fun
-card5_fullhouse(cs: card5): bool =
+fun card5_fullhouse(cs: card5): bool =
+    let
+        fun sort_rank(cs : card5) : int5 =
+            let
+                val (c1,c2,c3,c4,c5) = cs
+                val rs = (rank2int(card_rank(c1)),rank2int(card_rank(c2)),rank2int(card_rank(c3)),rank2int(card_rank(c4)),rank2int(card_rank(c5)))
+            in
+                int5_sort(rs)
+            end
+        fun help(rs : card5) : bool =
+            let
+                val rs = sort_rank(rs)
+                val (r1,r2,r3,r4,r5) = rs
+            in
+                case r1 = r2 andalso r2 <> r3 andalso r3 = r4 andalso r4 = r5 of
+                    true => true
+                   | _ => case r4 = r5 andalso r4 <> r3 andalso r3 = r2 andalso r2 = r1 of
+                            true => true
+                           | _ => false
+            end
+    in
+        help(cs)
+    end
+
+
+
 (*
 Please Give your implementation as follows:
 *)

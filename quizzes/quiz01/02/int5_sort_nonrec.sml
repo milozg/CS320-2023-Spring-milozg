@@ -49,11 +49,58 @@ int5_sort_nr(xs) for every 5-tuple xs of the type int5.
 *)
 (* ****** ****** *)
 
-fun
-int5_sort_nr(xs: int5): int5 =
-(*
-Please Give your implementation as follows:
-*)
+fun int5_sort_nr(xs: int5): int5 =
+    let
+        fun sort2(x1 : int, x2 :int) : (int * int) =
+            case x1 > x2 of
+                true => (x2,x1)
+                |false => (x1,x2)
+
+        fun sort3(x1 : int, x2 : int, x3 : int) : int * int * int =
+            let
+                val (s1,s2) = sort2(x1,x2)
+            in
+                case x3 > s2 of
+                    true => (s1,s2,x3)
+                  |false => case x3 > s1 of
+                                true => (s1,x3,s2)
+                                |false => (x3,s1,s2)
+            end
+
+        fun sort4(x1 : int, x2 : int, x3 : int, x4 : int) : int * int * int * int =
+            let
+                val (s1,s2,s3) = sort3(x1,x2,x3)
+            in
+                case x4 > s3 of
+                    true => (s1,s2,s3,x4)
+                    |false => case x4 > s2 of
+                                true => (s1,s2,x4,s3)
+                                |false => case x4 > s1 of
+                                            true => (s1,x4,s2,s3)
+                                            |false => (x4,s1,s2,s3)
+            end
+
+        fun sort5(x1 : int, x2 : int, x3 : int, x4 : int, x5 : int) : int * int * int * int * int =
+            let
+                val (s1,s2,s3,s4) = sort4(x1,x2,x3,x4)
+            in
+                case x5 > s4 of
+                    true => (s1,s2,s3,s4,x5)
+                    |false => case x5 > s3 of
+                                true => (s1,s2,s3,x5,s4)
+                                |false => case x5 > s2 of
+                                            true => (s1,s2,x5,s3,s4)
+                                            |false => case x5 > s1 of
+                                                        true => (s1,x5,s2,s3,s4)
+                                                        |false => (x5,s1,s2,s3,s4)
+            end
+        val(i1,i2,i3,i4,i5) = xs
+    in
+        sort5(i1,i2,i3,i4,i5)
+    end
+
+(* Please Give your implementation as follows: *)
+
 
 
 (* ****** ****** *)

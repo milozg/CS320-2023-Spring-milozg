@@ -19,6 +19,18 @@ fun
 find_root(f0: int -> int): int = ...
 *)
 
-(* ****** ****** *)
+fun find_root (f0 : int -> int) : int =
+    let
+        exception ZERO of int
+        fun loop (i : int) : int =
+            if f0(i) = 0 then
+                raise ZERO(i)
+            else if f0(~i) = 0 then
+                raise ZERO(~i)
+            else
+                loop(i + 1)
+    in
+        loop(0) handle ZERO(i) => i
+    end
 
 (* end of [CS320-2023-Spring-assign03-01.sml] *)

@@ -1,8 +1,8 @@
 (* ****** ****** *)
-(*
-use "./../assign03.sml";
-use "./../assign03-lib.sml";
-*)
+
+(* use "./../assign03.sml";
+use "./../assign03-lib.sml"; *)
+use "../../../mysmlib/mysmlib-ind.sml";
 (* ****** ****** *)
 
 (*
@@ -21,6 +21,18 @@ the list_range function
 //
 fun list_range(start: int, finish: int): int list
 *)
+
+fun list_range(start : int, finish : int) : int list =
+    let
+        fun loop(s : int, f : int, xs : int list): int list =
+            case s >= f of
+                true => xs
+             | false => loop(s + 1, f, s :: xs)
+    in
+        list_reverse(loop(start, finish, []))
+    end
+
+(* Note that list_reverse is tail recursive as well so the function above is tail recursive. *)
 
 (* ****** ****** *)
 

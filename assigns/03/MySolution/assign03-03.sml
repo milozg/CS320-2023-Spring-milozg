@@ -3,6 +3,8 @@
 use "./../assign03.sml";
 use "./../assign03-lib.sml";
 *)
+use "../../../mysmlib/mysmlib-ind.sml";
+use "./assign03-02.sml";
 (* ****** ****** *)
 
 (*
@@ -15,6 +17,9 @@ equals [f(0), f(1), ..., f(n-1)]
 list_tabulate(n: int, f: int -> 'a): 'a list
 //
 *)
+
+fun list_tabulate(n : int, f : int -> 'a) : 'a list = list_map(list_range(0,n),f)
+
 
 (* ****** ****** *)
 

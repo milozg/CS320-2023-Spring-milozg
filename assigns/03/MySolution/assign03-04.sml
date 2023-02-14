@@ -16,6 +16,7 @@ the left most one should be returned.
 
 fun list_longest_ascend(xs: int list): int list
 *)
+
 fun list_longest_ascend(xs : int list) : int list =
     let
         fun longest_head(xs : int list) : int list =
@@ -23,41 +24,23 @@ fun list_longest_ascend(xs : int list) : int list =
                 [] => []
              | [x] => [x]
              | x1 :: x2 :: xs => if x1 <= x2 then
-                                    x1 :: longest_head(x2 :: xs)
+                                    list_size_compare(x1 :: longest_head(x2 :: xs), longest_head(x1 :: xs))
                                  else
-                                    [x1]
+                                    longest_head(x1 :: xs)
+
+        fun get_longest(xs : int list, long : int list) : int list =
+            case xs of
+                [] => long
+             | x :: xs => let
+                            val ys = longest_head(x :: xs)
+                          in
+                            case list_size(ys) > list_size(long) of
+                                true => get_longest(xs, ys)
+                             |false => get_longest(xs, long)
+                          end
     in
-        case xs of
-            [] => []
-        | x :: xs => 
+        get_longest(xs,[])
     end
-
-(* fun list_longest_ascend(xs : int list) : int list =
-    let
-        fun count_ascend(xs : int list , curr : int, len : int, ascend : int list) : int * int list =
-            case xs of
-                [] => (len,ascend)
-            | x :: xs => if x >= curr then
-                            count_ascend(xs,x,len+1, x :: ascend)
-                        else
-                            count_ascend(xs,curr,len,ascend)
-
-        fun help (xs : int list, longest : int, longlst : int list) : int list =
-            case xs of
-                [] => longlst
-            | x :: xs => let
-                            val(l,a) = count_ascend(xs,x,1,[x])
-                         in
-                            if l > longest then
-                                help(xs,l,a)
-                            else
-                                help(xs,longest,longlst)
-                         end
-    in
-        list_reverse(help(xs,0,[]))
-    end *)
-
-
 
 (* ****** ****** *)
 

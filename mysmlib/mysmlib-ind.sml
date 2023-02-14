@@ -38,6 +38,11 @@ fun list_size(xs : 'a list) : int =
         help(xs,0)
     end
 
+fun list_size_compare(xs : 'a list, ys : 'a list) : 'a list =
+    case list_size(xs) >= list_size(ys) of
+        true => xs
+     | false => ys
+
 (* ****** ****** *)
 
 (* end of [BUCASCS320-2023-Spring-mysmlib-ind.sml] *)

@@ -28,6 +28,16 @@ fun list_map(xs : 'a list , f : 'a -> 'b) : 'b list =
         list_reverse(loop(xs,f,[]))
     end
 
+fun list_size(xs : 'a list) : int =
+    let
+        fun help(xs : 'a list, i : int) : int =
+            case xs of
+                [] => i
+            | x :: xs => help(xs, i + 1)
+    in
+        help(xs,0)
+    end
+
 (* ****** ****** *)
 
 (* end of [BUCASCS320-2023-Spring-mysmlib-ind.sml] *)

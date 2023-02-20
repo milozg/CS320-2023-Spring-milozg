@@ -211,11 +211,35 @@ val list_foldright = list_reduce_right
 val
 list_reverse = (* a.k.a. List.rev *)
 fn(xs: 'a list) =>
-list_reduce_left([], xs, fn(r, x) => x :: r)
+list_reduce_left(xs, [], fn(r, x) => x :: r)
 val
 list_rappend =
 fn(xs: 'a list, ys: 'a list) =>
-list_reduce_left(ys, xs, fn(r, x) => x :: r)
+list_reduce_left(xs, ys, fn(r, x) => x :: r)
+
+(* ****** ****** *)
+
+fun
+list_forall
+( xs: 'a list
+, test: 'a -> bool): bool =
+(
+case xs of
+  nil => true
+| x1 :: xs =>
+  test(x1) andalso list_forall(xs, test)
+)
+
+fun
+list_exists
+( xs: 'a list
+, test: 'a -> bool): bool =
+(
+case xs of
+  nil => false
+| x1 :: xs =>
+  test(x1) orelse list_exists(xs, test)
+)
 
 (* ****** ****** *)
 
@@ -425,17 +449,17 @@ fn(xs, test) =>
 foreach_to_forall(int1_foreach)(xs, test)
 
 (* ****** ****** *)
-
+(*
 val
 list_forall =
 fn(xs, test) =>
 foreach_to_forall(list_foreach)(xs, test)
-
+*)
 (* ****** ****** *)
 
 val
 string_forall =
-fn( cs, test ) =>
+fn(cs, test) =>
 int1_forall
 (String.size(cs), fn(i) => test(String.sub(cs, i)))
 
@@ -450,32 +474,48 @@ foreach_to_get_at(list_foreach)(xs, i0)
 
 val
 int1_listize =
-fn(xs) => foreach_to_listize(int1_foreach)(xs)
+fn(xs) =>
+foreach_to_listize(int1_foreach)(xs)
 val
 int1_rlistize =
-fn(xs) => foreach_to_rlistize(int1_foreach)(xs)
+fn(xs) =>
+foreach_to_rlistize(int1_foreach)(xs)
 
 (* ****** ****** *)
 
 val
 list_rlistize =
-fn(xs) => foreach_to_rlistize(list_foreach)(xs)
+fn(xs) =>
+foreach_to_rlistize(list_foreach)(xs)
 
 (* ****** ****** *)
 
 val
 string_listize =
-fn(xs) => foreach_to_listize(string_foreach)(xs)
+fn(xs) =>
+foreach_to_listize(string_foreach)(xs)
 val
 string_rlistize =
-fn(xs) => foreach_to_rlistize(string_foreach)(xs)
+fn(xs) =>
+foreach_to_rlistize(string_foreach)(xs)
+
+(* ****** ****** *)
+
+val
+int1_map_list =
+fn(xs,fopr) =>
+foreach_to_map_list(int1_foreach)(xs,fopr)
+val
+string_map_list =
+fn(xs,fopr) =>
+foreach_to_map_list(string_foreach)(xs,fopr)
 
 (* ****** ****** *)
 
 val
 int1_foldleft =
-fn(r0,xs,fopr) =>
-foreach_to_foldleft(int1_foreach)(r0,xs,fopr)
+fn(xs,r0,fopr) =>
+foreach_to_foldleft(int1_foreach)(xs,r0,fopr)
 val
 int1_foldright =
 fn(xs,r0,fopr) =>
@@ -485,23 +525,23 @@ int1_foldleft(xs, r0, fn(r0, x0) => fopr(xs-1-x0, r0))
 
 val
 list_foldleft =
-fn(r0,xs,fopr) =>
-foreach_to_foldleft(list_foreach)(r0,xs,fopr)
+fn(xs,r0,fopr) =>
+foreach_to_foldleft(list_foreach)(xs,r0,fopr)
 val
 list_foldright =
 fn(xs,r0,fopr) =>
-foreach_to_foldleft(list_foreach)(list_reverse(xs), r0,fopr)
+foreach_to_foldleft(list_foreach)(list_reverse(xs),r0,fopr)
 
 (* ****** ****** *)
 
 val
 string_foldleft =
-fn( r0,cs,fopr ) =>
+fn(cs,r0,fopr) =>
 int1_foldleft
 (String.size(cs), r0, fn(r0, i0) => fopr(r0, String.sub(cs, i0)))
 val
 string_foldright =
-fn( cs,r0,fopr ) =>
+fn(cs,r0,fopr) =>
 int1_foldright
 (String.size(cs), r0, fn(i0, r0) => fopr(String.sub(cs, i0), r0))
 

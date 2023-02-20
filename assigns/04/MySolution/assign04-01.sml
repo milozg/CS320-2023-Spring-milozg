@@ -27,6 +27,18 @@ in
 end
 *)
 
+fun isPrime(n : int) : bool =
+    if n > 2 then
+        int1_forall(n,fn(x) => if x >= 2 then n mod x <> 0 else true)
+    else
+        true
+
+
+
+
+
+
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign04-01.sml] *)

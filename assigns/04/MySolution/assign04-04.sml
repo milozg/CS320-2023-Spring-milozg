@@ -23,6 +23,10 @@ returns a list of boards consisting of all the solutions to the puzzle.
 //
 *)
 
+fun board_get(b : board_t, i : int) =
+    foreach_to_get_at(b,i)
+
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign04-04.sml] *)

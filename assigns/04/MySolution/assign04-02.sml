@@ -31,11 +31,11 @@ of a set is insignificant.
 *)
 (* ****** ****** *)
 
-(*
+
 val
 list_subsets =
-fn(xs: 'a list) => ...
-*)
+fn(xs: 'a list) => list_foldleft(xs,[[]],fn(r,a) => r @ list_map(r,fn(xs) => a :: xs))
+
 
 (* ****** ****** *)
 

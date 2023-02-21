@@ -30,8 +30,10 @@ end
 fun isPrime(n : int) : bool =
     if n > 2 then
         int1_forall(n,fn(x) => if x >= 2 then n mod x <> 0 else true)
-    else
+    else if n = 2 then
         true
+    else
+        false
 
 
 

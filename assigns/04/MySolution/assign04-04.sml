@@ -59,8 +59,51 @@ fn
     else
         true
 
+val
+board_set =
+fn
+(b : board_t, i : int, j : int) =>
+let
+    val (x0,x1,x2,x3,x4,x5,x6,x7) = b
+in
+    case i of
+    0 => (j,x1,x2,x3,x4,x5,x6,x7)
+   |1 => (x0,j,x2,x3,x4,x5,x6,x7)
+   |2 => (x0,x1,j,x3,x4,x5,x6,x7)
+   |3 => (x0,x1,x2,j,x4,x5,x6,x7)
+   |4 => (x0,x1,x2,x3,j,x5,x6,x7)
+   |5 => (x0,x1,x2,x3,x4,j,x6,x7)
+   |6 => (x0,x1,x2,x3,x4,x5,j,x7)
+   |7 => (x0,x1,x2,x3,x4,x5,x6,j)
+   |_ => b
+end
 
+val
+possible_cols_for_row =
+fn
+(b : board_t, i : int) =>
+foreach_to_filter_list(int1_foreach)(8, fn(x) => safety_test2(i,x,b,i))
 
+val
+update_blist =
+fn
+(bs : board_t list, i : int) =>
+    list_foldleft(bs, [], fn(r,b) => let
+                                        val ps = possible_cols_for_row(b,i)
+                                     in
+                                        case ps of
+                                            [] => r
+                                            |_ => r @ list_map(ps, fn(x) => board_set(b,i,x))
+                                     end)
+
+fun
+queen8_puzzle_solve(): board_t list =
+let
+    val start = [(~1,~1,~1,~1,~1,~1,~1,~1)]
+    val bs = int1_foldleft(8,start, fn(r,i) => update_blist(r,i))
+in
+    bs
+end
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign04-04.sml] *)

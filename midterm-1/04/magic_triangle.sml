@@ -57,10 +57,32 @@ the previous.
 
 (* ****** ****** *)
 
-(*
+fun comp_curr(xs : int list) : int list =
+    let
+        fun sums (xs : int list) : int list =
+            case xs of
+                [] => []
+                | [x] => []
+                | x :: y :: xs => (x + y) :: sums(y :: xs)
+    in
+        1 :: sums(xs) @ [1]
+    end
+
+
 fun
-magic_triangle (n : int) : int list list = ...
-*)
+magic_triangle (n : int) : int list list =
+    let
+        fun help (n : int, prev : int list, acc : int list list, i : int) : int list list =
+            case i >= n of
+                true => acc
+             | false => help(n,comp_curr(prev), comp_curr(prev) :: acc, i+1)
+    in
+        if n = 0 then
+            []
+        else
+            list_reverse(help(n,[1],[[1]], 1))
+    end
+
 
 (* ****** ****** *)
 

@@ -28,10 +28,16 @@ is insignificant.
 
 (* ****** ****** *)
 
-(*
+
 fun
-list_nchoose2(xs: int list): (int * int) list = ...
-*)
+list_nchoose2(xs: int list): (int * int) list =
+let
+    val enum = foreach_to_ifoldleft(list_foreach)(xs, [], fn (acc,i,x) => (x,i) :: acc)
+    val cross = list_cross2_row(enum,enum)
+in
+    list_map(list_filter(cross, fn((x,i1),(y,i2)) => x <= y andalso i1 <> i2), fn((x,i1),(y,i2)) => (x,y))
+end
+
 
 (* ****** ****** *)
 

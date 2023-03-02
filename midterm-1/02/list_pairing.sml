@@ -25,11 +25,29 @@ list_pairing([1,2,3,4]) = ([(1,4),(2,3)], NONE)
 //
 *)
 (* ****** ****** *)
-(*
+
+fun pop_last(xs : 'a list) : 'a list * 'a =
+    let
+        val rev = list_reverse(xs)
+    in
+        case xs of
+            [x] => ([],x)
+        | x :: xs => (list_reverse(xs),x)
+    end
+
 fun
 list_pairing
-(xs: 'a list): ('a * 'a) list * 'a option = ...
-*)
+(xs: 'a list): ('a * 'a) list * 'a option =
+    case xs of
+        [] => ([], NONE)
+     | [x]=> ([], SOME(x))
+     | x :: xs => let
+                    val (ys,last) = pop_last(xs)
+                    val (reslist, res) = list_pairing(ys)
+                  in
+                    ((x,last) :: reslist, res)
+                  end
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm1-list_pairing.sml] *)

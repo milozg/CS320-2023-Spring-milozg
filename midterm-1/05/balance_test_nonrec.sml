@@ -109,7 +109,13 @@ andalso bintr_size(tl) = bintr_size(tr)
 
 
 val
-bintr_balanced_nonrec = fn(t0: 'a bintr) => bintr_fold(t0,fn(l) => true, fn(tl,tr) => )
+bintr_balanced_nonrec =
+fn(t0: 'a bintr) => #1(bintr_fold(t0,fn(l) => (true,1), fn(tl,tr) => let
+                                                                    val (b1,len1) = tl
+                                                                    val (b2,len2) = tr
+                                                                  in
+                                                                    (b1 andalso b2 andalso len1 = len2, len1 + len2)
+                                                                  end))
 
 
 (* ****** ****** *)

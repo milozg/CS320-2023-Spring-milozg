@@ -51,6 +51,8 @@ in your implementation
 //
 *)
 
+
+
 (* ****** ****** *)
 
 val AB =
@@ -65,6 +67,13 @@ val
 string_imap_list =
 fn(cs, ifopr) =>
 foreach_to_map_list(string_iforeach)(cs, ifopr)
+
+
+fun replace_letter(word : string, letter : char, i : int) : string =
+    string_implode(string_imap_list(word, fn(p,c) => if p = i then letter else c))
+
+fun word_neighbors(word: string): string list =
+    list_filter(list_concat(string_imap_list(word, fn(p,c) => string_map_list(AB, fn(ca) => replace_letter(word,ca,p)))), fn(s) => s <> word)
 
 (* ****** ****** *)
 

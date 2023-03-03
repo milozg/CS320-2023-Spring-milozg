@@ -26,27 +26,27 @@ list_pairing([1,2,3,4]) = ([(1,4),(2,3)], NONE)
 *)
 (* ****** ****** *)
 
-fun pop_last(xs : 'a list) : 'a list * 'a =
-    let
-        val rev = list_reverse(xs)
-    in
-        case xs of
-            [x] => ([],x)
-        | x :: xs => (list_reverse(xs),x)
-    end
-
 fun
 list_pairing
 (xs: 'a list): ('a * 'a) list * 'a option =
-    case xs of
-        [] => ([], NONE)
-     | [x]=> ([], SOME(x))
-     | x :: xs => let
-                    val (ys,last) = pop_last(xs)
-                    val (reslist, res) = list_pairing(ys)
-                  in
-                    ((x,last) :: reslist, res)
-                  end
+    let
+        val len = list_length(xs)
+        val opt = if len mod 2 = 0 then NONE else SOME(list_get_at(xs,(len div 2) + 1))
+        fun half(xs : 'a list, i : int, n : int, acc : 'a list) : 'a list =
+            case i >=n of
+                true => acc
+            | false => case xs of
+                        [] => acc
+                        |x :: xs => half(xs, i+1, n, x :: acc)
+
+        val ys = half(xs,0,(len div 2)-1,[])
+        val half_xs = list_reverse(ys)
+    in
+        (list_zip2(half_xs,ys),opt)
+    end
+
+
+
 
 (* ****** ****** *)
 

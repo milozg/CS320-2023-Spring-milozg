@@ -22,11 +22,32 @@ two seconds)
 //
 *)
 (* ****** ****** *)
+fun update_pairs(pairs : (int * int) list, n : int) : (int * int) list =
+    let
+        val stand_in = pairs
+    in
+        case pairs of
+            [] => (1,n) :: stand_in
+        | (i,x) :: xs =>  case x = n of
+                            true => (i + 1, x) :: xs
+                         |false => (i,x) :: update_pairs(xs,n)
+    end
 
-(*
 fun
-list_grouping(xs: int list): (int * int) list = ...
-*)
+list_grouping(xs: int list): (int * int) list =
+    let
+        fun help(xs : int list, pairs : (int * int) list) : (int * int) list =
+            case xs of
+                [] => pairs
+            |x :: xs => let
+                            val new_pairs = update_pairs(pairs,x)
+                        in
+                            help(xs,new_pairs)
+                        end
+    in
+        help(xs,[])
+    end
+
 
 (* ****** ****** *)
 

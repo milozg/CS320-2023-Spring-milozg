@@ -34,12 +34,12 @@ functions in your implementation of list_averages.
 fun
 list_averages(xs: real list): real list =
     let
-    val sums =
-        list_foldright(xs, [], fn (acc, x) => case acc of
-                                                [] => [x]
-                                                | y :: ys => (y + x) :: acc)
+        fun help(xs : real list, sum : real, avges : real list, i : int) =
+            case xs of
+                [] => avges
+            |x :: xs => help(xs, sum + x,(sum + x)/int2real(i) :: avges, i + 1)
     in
-        foreach_to_ifoldleft(list_foreach)(sums, [], fn (acc, i, s) => s/int2real(i+1) :: acc)
+        list_reverse(help(xs,0.0,[],1))
     end
 
 (* ****** ****** *)

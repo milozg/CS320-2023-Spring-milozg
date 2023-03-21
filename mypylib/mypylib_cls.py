@@ -32,6 +32,11 @@ def int1_rforeach(n0, work_func):
         i0 = (i0 + 1)
     return None # work_func(i0) is done for all n0 > i0 >= 0
 
+def int1_map_fnlist(xs, fopr_func):
+    return foreach_to_map_fnlist(int1_foreach)(xs, fopr_func)
+def int1_map_pylist(xs, fopr_func):
+    return foreach_to_map_pylist(int1_foreach)(xs, fopr_func)
+
 def int1_foldleft(xs, r0, fopr_func):
     return foreach_to_foldleft(int1_foreach)(xs, r0, fopr_func)
 def int1_foldright(xs, r0, fopr_func):
@@ -88,7 +93,10 @@ class fnlist_cons(fnlist):
         return self.cons2
 # end-of-class(fnlist_cons)
 
-###########################################################################
+####################################################
+def fnlist_sing(x0):
+    return fnlist_cons(x0, fnlist_nil())
+####################################################
 
 def fnlist_print(xs):
     nx = 0
@@ -102,6 +110,8 @@ def fnlist_print(xs):
     print("]", end='')
 # end-of-[fnlist_print]
 
+####################################################
+
 def fnlist_foreach(xs, work_func):
     while(xs.ctag > 0):
         x0 = xs.cons1
@@ -109,17 +119,34 @@ def fnlist_foreach(xs, work_func):
         work_func(x0)
     return None
 
+####################################################
 def fnlist_reverse(xs):
     return \
         fnlist_foldleft \
         (xs, fnlist_nil(), lambda r0, x0: fnlist_cons(x0, r0))
-def fnlist_foldleft(xs, r0, fopr_func):
+####################################################
+def fnlist_append(xs, ys):
+    return fnlist_foldright(xs, ys, fnlist_cons)
+def fnlist_concat(xss):
+    return fnlist_foldright(xss, fnlist_nil(), fnlist_append)
+####################################################
+def fnlist_foldleft(xs, ini, fopr_func):
     return \
-        foreach_to_foldleft(fnlist_foreach)(xs, r0, fopr_func)
+        foreach_to_foldleft(fnlist_foreach)(xs, ini, fopr_func)
+def fnlist_foldright(xs, ini, fopr_func):
+    if xs.ctag == 0:
+        return ini
+    else:
+        return fopr_func\
+            (xs.cons1, fnlist_foldright(xs.cons2, ini, fopr_func))
+    # end-of-(if-then-else)
+# end-of-(fnlist_foldright(xs, ini, fopr_func))
+####################################################
 def fnlist_pylistize(xs):
     return foreach_to_pylistize(fnlist_foreach)(xs)
 def fnlist_rpylistize(xs):
     return foreach_to_rpylistize(fnlist_foreach)(xs)
+####################################################
 
 def fnlist_make_pylist(xs): return pylist_fnlistize(xs)
 
@@ -135,7 +162,7 @@ def pylist_rforeach(xs, work_func):
         work_func(x0)
     return None # work_func(i0) is done for all x0 in reversed(xs)
 
-def pylist_map(xs, fopr_func):
+def pylist_make_map(xs, fopr_func):
     return foreach_to_map_pylist(pylist_foreach)(xs, fopr_func)
 def pylist_map_pylist(xs, fopr_func):
     return foreach_to_map_pylist(pylist_foreach)(xs, fopr_func)
@@ -158,18 +185,51 @@ def pylist_make_fnlist(xs):
 
 ###########################################################################
 
+def pylist_concat(xss):
+    res = []
+    pylist_foreach(xss, lambda xs: res.extend(xs))
+    return res
+def pylist_append(xs, ys):
+    return pylist_concat([xs, ys])
+
+###########################################################################
+
 def pylist_iforeach(xs, iwork_func):
     return foreach_to_iforeach(pylist_foreach)(xs, iwork_func)
 
-def pylist_imap(xs, ifopr_func):
+def pylist_make_imap(xs, ifopr_func):
     return iforeach_to_imap_pylist(pylist_iforeach)(xs, ifopr_func)
 def pylist_imap_pylist(xs, ifopr_func):
     return iforeach_to_imap_pylist(pylist_iforeach)(xs, ifopr_func)
 
-def pylist_ifilter(xs, itest_func):
+def pylist_make_ifilter(xs, itest_func):
     return iforeach_to_ifilter_pylist(pylist_iforeach)(xs, itest_func)
 def pylist_ifilter_pylist(xs, itest_func):
     return iforeach_to_ifilter_pylist(pylist_iforeach)(xs, itest_func)
+
+###########################################################################
+
+def pylist_iminimum(xs):
+    if not xs:
+        return (-1, None)    
+    imin = 0
+    xmin = xs[0]
+    for (i0, x1) in enumerate(xs[1:]):
+        if x1 < xmin:
+            xmin = x1
+            imin = i0 + 1
+    return (imin, xmin)
+
+def pylist_imaximum(xs):
+    if not xs:
+        return (-1, None)    
+    imax = 0
+    xmax = xs[0]
+    for (i0, x1) in enumerate(xs[1:]):
+        if x1 > xmax:
+            xmax = x1
+            imax = i0 + 1
+    return (imax, xmax)
 
 ###########################################################################
 
@@ -200,6 +260,8 @@ def string_make_fnlist(xs): return "".join(fnlist_pylistize(xs))
 def string_iforeach(xs, iwork_func):
     return foreach_to_iforeach(string_foreach)(xs, iwork_func)
 
+def string_imap_fnlist(xs, ifopr_func):
+    return iforeach_to_imap_fnlist(string_iforeach)(xs, ifopr_func)
 def string_imap_pylist(xs, ifopr_func):
     return iforeach_to_imap_pylist(string_iforeach)(xs, ifopr_func)
 
@@ -276,6 +338,22 @@ def foreach_to_iforeach(foreach):
 
 ###########################################################################
 
+def foreach_to_ifoldleft(foreach):
+    def ifoldleft(xs, r0, ifopr_func):
+        i0 = 0
+        res = r0
+        def work_func(x0):
+            nonlocal i0
+            nonlocal res
+            res = ifopr_func(res, i0, x0)
+            i0 = i0 + 1
+            return None
+        foreach(xs, work_func)
+        return res
+    return ifoldleft # foreach-function is turned into foldleft-function
+
+###########################################################################
+
 def foreach_to_pylistize(foreach):
     def pylistize(xs):
         res = []
@@ -292,9 +370,10 @@ def foreach_to_rpylistize(foreach):
         res = []
         def work_func(x0):
             nonlocal res
-            res.insert(0, x0)
+            res.append(x0)
             return None
         foreach(xs, work_func)
+        res.reverse()
         return res
     return rpylistize # foreach-function is turned into rpylistize-function
 
@@ -327,7 +406,7 @@ def foreach_to_map_pylist(foreach):
 def foreach_to_map_fnlist(foreach):
     return \
         lambda xs, fopr_func: \
-        funlist_make_pylist(foreach_to_map_fnlist(foreach)(xs, fopr_func))
+        fnlist_make_pylist(foreach_to_map_pylist(foreach)(xs, fopr_func))
 
 def foreach_to_map_rfnlist(foreach):
     def map_rfnlist(xs, fopr_func):
@@ -357,7 +436,7 @@ def foreach_to_filter_pylist(foreach):
 def foreach_to_filter_fnlist(foreach):
     return \
         lambda xs, test_func: \
-        funlist_make_pylist(foreach_to_filter_fnlist(foreach)(xs, test_func))
+        fnlist_make_pylist(foreach_to_filter_pylist(foreach)(xs, test_func))
 
 ###########################################################################
 
@@ -375,7 +454,7 @@ def iforeach_to_imap_pylist(iforeach):
 def iforeach_to_imap_fnlist(iforeach):
     return \
         lambda xs, ifopr_func: \
-        funlist_make_pylist(iforeach_to_map_fnlist(iforeach)(xs, ifopr_func))
+        fnlist_make_pylist(iforeach_to_imap_pylist(iforeach)(xs, ifopr_func))
 
 def iforeach_to_imap_rfnlist(iforeach):
     def imap_rfnlist(xs, ifopr_func):
@@ -405,7 +484,7 @@ def iforeach_to_ifilter_pylist(iforeach):
 def iforeach_to_ifilter_fnlist(iforeach):
     return \
         lambda xs, itest_func: \
-        funlist_make_pylist(iforeach_to_ifilter_fnlist(iforeach)(xs, itest_func))
+        fnlist_make_pylist(iforeach_to_ifilter_fnlist(iforeach)(xs, itest_func))
 
 ###########################################################################
 

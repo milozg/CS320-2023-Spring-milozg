@@ -46,8 +46,8 @@ ref_foldleft
 
 fun
 ref_ifoldleft
-(ref: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r
-*)
+(r0: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r = fopr(res,0,!r0)
+
 
 (* ****** ****** *)
 

@@ -196,34 +196,41 @@ def make_seam_values(energy,ww,hh):
     return energy
 
 
-
-# print(make_seam_values(balloons_energy.pixlst, balloons.width,balloons.height))
-
-def remove_best_seam(image, energy):
+def remove_best_seam(image):
+    ww = image.width
+    hh = image.height
+    energy = image_edges_color(image)
     img_list = image.pixlst
-    print(energy.pixlst)
-    eng_list = energy.pixlst
-    seamed_e = make_seam_values(eng_list, energy.width,energy.height)
-    last_row_min = seamed_e[(energy.width * energy.height) - energy.width][0]
-    for i in range((energy.width * energy.height) - energy.width, (energy.width * energy.height)):
-        if seamed_e[i] < last_row_min:
-            last_row_min = seamed_e[i]
+    eng_list = list(energy.pixlst)
+
+    seamed_e = make_seam_values(eng_list, ww,hh)
+    last_row_min = seamed_e[(ww * hh) - ww][0]
+    loc = (ww * hh) - ww
+    for i in range((ww * hh) - ww, (ww * hh)):
+        if seamed_e[i][0] < last_row_min:
+            last_row_min = seamed_e[i][0]
             loc = i
 
-    while seamed_e[loc][1] != 2:
-        popped_e = eng_list.pop(loc)
-        popped_i = img_lst.pop(loc)
-        if seamed_e[loc][1] == -1:
-            loc = (loc-energy.width)-1
+    row = hh
+    to_be_removed = []
+
+    while row >= 0:
+        to_be_removed = pylist_append([loc % ww],to_be_removed)
+        if seamed_e[loc][1] == 2:
+            break
+        elif seamed_e[loc][1] == -1:
+            loc = (loc-ww)-1
         elif seamed_e[loc][1] == 0:
-            loc = (loc-energy.width)
+            loc = (loc-ww)
         else:
-            loc = (loc-energy.width)+1
+            loc = (loc-ww)+1
+        row = row - 1
 
-    eng_list = pop(loc)
-    img_list = pop(loc)
+    # energy = imgvec.image(hh, ww-1, imgvec.image_i2filter_pylist(energy, lambda i0, j0, _: to_be_removed[i0] != j0))
+    image = imgvec.image(hh, ww-1, imgvec.image_i2filter_pylist(image, lambda i0, j0, _: to_be_removed[i0] != j0))
 
-    return (image(image.height,image.width - 1, img_lst), image(energy.height,energy.width - 1, eng_list))
+    return image
+
 
 
 def image_seam_carving_color(image, ncol):
@@ -233,12 +240,15 @@ def image_seam_carving_color(image, ncol):
     """
     assert ncol < image.width
     energy = image_edges_color(image)
-    print(energy)
 
-    res = int1_foldleft(ncol, (image,energy), lambda r,_: remove_best_seam(r[0],r[1]))
+    # energy = imgvec.image(energy.height, energy.width, list(energy.pixlst))
+    image = imgvec.image(image.height, image.width, list(image.pixlst))
 
-    return res[0]
+    res = int1_foldleft(ncol, image, lambda r,_: remove_best_seam(r))
+
+    return imgvec.image_make_pylist(res.height, res.width, res.pixlst)
+
 
 ####################################################
-save_color_image(image_seam_carving_color(balloons, 10), "OUTPUT/balloons_seam_carving_10.png")
+save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
 ####################################################

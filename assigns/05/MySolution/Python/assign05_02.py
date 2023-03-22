@@ -10,22 +10,21 @@ from mypylib_cls import *
 # Please *translate* into Python the posted solution
 # on Piazza for word_neighbors (which is writtend in SML)
 #
-def strsub(word, i):
-    return word[i]
-
-def string_length(word):
-    return string_foldleft(word, 0, lambda r,_: r + 1)
-
-def string_implode(ss):
-    return foreach_to_foldleft(fnlist_foreach)(ss, "", lambda r,s: r + s)
-
+####################################################
 def fnlist_tabulate(n,f):
     return fnlist_reverse\
             (int1_foldleft(n,fnlist_nil(),lambda xs,i: fnlist_cons(f(i),xs)))
-
+####################################################
+def strsub(word, i):
+    return word[i]
+def string_length(word):
+    return string_foldleft(word, 0, lambda r,_: r + 1)
+    
+def string_implode(ss):
+    return foreach_to_foldleft(fnlist_foreach)(ss, "", lambda r,s: r + s)
 def string_tabulate(n,f):
     return string_implode(fnlist_tabulate(n,f))
-
+####################################################
 def word_neighbors(word):
     """
     Note that this function should returns a fnlist

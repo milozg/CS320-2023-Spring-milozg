@@ -74,13 +74,20 @@ def image_invert_color(ximg):
 #
 # towers = \
 #     load_color_image("INPUT/towers.jpg")
-# balloons = \
-#     load_color_image("INPUT/balloons.png")
+balloons = \
+    load_color_image("INPUT/balloons.png")
+balloons_invert = \
+    load_color_image("OUTPUT/balloons_invert.png")
+balloons_blurred = \
+    load_color_image("OUTPUT/balloons_blurred.png")
+balloons_energy = \
+    load_color_image("OUTPUT/balloons_energy.png")
 #
 ####################################################
 #
 # save_color_image(image_invert_color(towers), "OUTPUT/towers_invert.png")
 # save_color_image(image_invert_color(balloons), "OUTPUT/balloons_invert.png")
+# save_color_image(image_edges_color(balloons), "OUTPUT/balloons_energy.png")
 #
 ####################################################
 
@@ -148,6 +155,77 @@ def image_blur_bbehav_color(image, ksize, bbehav):
 #    (image_blur_bbehav_color(balloons, 5, 'extend'), "OUTPUT/balloons_blurred.png")
 ####################################################
 
+def best_energy_pixel(energy,i, ww):
+    if i < ww:
+        energy[i] = (energy[i],2)
+
+    elif i % ww == 0:
+        center = energy[i] + energy[i-ww][0]
+        right = energy[i] + energy[(i-ww)+1][0]
+
+        if center < right:
+            energy[i] = (center,0)
+        else:
+            energy[i] = (right,1)
+
+    elif (i+1) % ww == 0:
+        left = energy[i] + energy[(i-ww)-1][0]
+        center = energy[i] + energy[i-ww][0]
+
+        if center < left:
+            energy[i] = (center,0)
+        else:
+            energy[i] = (left,-1)
+
+    else:
+        left = energy[i] + energy[(i-ww)-1][0]
+        center = energy[i] + energy[i-ww][0]
+        right = energy[i] + energy[(i-ww)+1][0]
+
+        if center < right and center < left:
+            energy[i] = (center,0)
+        elif right < left:
+            energy[i] = (right,1)
+        else:
+            energy[i] = (left,-1)
+
+    return None
+
+def make_seam_values(energy,ww,hh):
+    int1_foreach(ww * hh, lambda i: best_energy_pixel(energy,i,ww))
+    return energy
+
+
+
+# print(make_seam_values(balloons_energy.pixlst, balloons.width,balloons.height))
+
+def remove_best_seam(image, energy):
+    img_list = image.pixlst
+    print(energy.pixlst)
+    eng_list = energy.pixlst
+    seamed_e = make_seam_values(eng_list, energy.width,energy.height)
+    last_row_min = seamed_e[(energy.width * energy.height) - energy.width][0]
+    for i in range((energy.width * energy.height) - energy.width, (energy.width * energy.height)):
+        if seamed_e[i] < last_row_min:
+            last_row_min = seamed_e[i]
+            loc = i
+
+    while seamed_e[loc][1] != 2:
+        popped_e = eng_list.pop(loc)
+        popped_i = img_lst.pop(loc)
+        if seamed_e[loc][1] == -1:
+            loc = (loc-energy.width)-1
+        elif seamed_e[loc][1] == 0:
+            loc = (loc-energy.width)
+        else:
+            loc = (loc-energy.width)+1
+
+    eng_list = pop(loc)
+    img_list = pop(loc)
+
+    return (image(image.height,image.width - 1, img_lst), image(energy.height,energy.width - 1, eng_list))
+
+
 def image_seam_carving_color(image, ncol):
     """
     Starting from the given image, use the seam carving technique to remove
@@ -155,8 +233,12 @@ def image_seam_carving_color(image, ncol):
     """
     assert ncol < image.width
     energy = image_edges_color(image)
-    raise NotImplementedError
+    print(energy)
+
+    res = int1_foldleft(ncol, (image,energy), lambda r,_: remove_best_seam(r[0],r[1]))
+
+    return res[0]
 
 ####################################################
-# save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
+save_color_image(image_seam_carving_color(balloons, 10), "OUTPUT/balloons_seam_carving_10.png")
 ####################################################

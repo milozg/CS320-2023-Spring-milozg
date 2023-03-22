@@ -228,6 +228,8 @@ def remove_best_seam(image):
 
     # energy = imgvec.image(hh, ww-1, imgvec.image_i2filter_pylist(energy, lambda i0, j0, _: to_be_removed[i0] != j0))
     image = imgvec.image(hh, ww-1, imgvec.image_i2filter_pylist(image, lambda i0, j0, _: to_be_removed[i0] != j0))
+    # image = imgvec.image(hh, ww, imgvec.image_i2map_pylist\
+    #             (image, lambda i0, j0, v0: v0 if to_be_removed[i0] != j0 else (255, 255, 255)))
 
     return image
 
@@ -250,5 +252,5 @@ def image_seam_carving_color(image, ncol):
 
 
 ####################################################
-save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
+# save_color_image(image_seam_carving_color(balloons, 10), "OUTPUT/balloons_seam_white_10.png")
 ####################################################

@@ -739,8 +739,10 @@ fun
 helper(i): int strcon =
 if
 (i >= n)
-then strcon_nil
-else strcon_cons(i, fn () => helper(i+1)) in helper(0)
+then
+strcon_nil(*void*)
+else
+strcon_cons(i, fn () => helper(i+1)) in helper(0)
 end
 
 (* ****** ****** *)
@@ -758,13 +760,32 @@ case xs of
 (* ****** ****** *)
 
 fun
-stream_make_map(xs, fopr) = fn () =>
+stream_make_map(fxs, fopr) = fn () =>
 (
-case xs() of
+case fxs() of
   strcon_nil =>
   strcon_nil
-| strcon_cons(x1, xs) =>
-  strcon_cons(fopr(x1), stream_make_map(xs, fopr))
+| strcon_cons(x1, fxs) =>
+  strcon_cons(fopr(x1), stream_make_map(fxs, fopr))
+)
+
+(* ****** ****** *)
+
+fun
+stream_make_filter
+( fxs: 'a stream
+, test: 'a -> bool): 'a stream = fn () =>
+(
+case fxs() of
+  strcon_nil =>
+  strcon_nil
+| strcon_cons(x1, fxs) =>
+  if
+  test(x1)
+  then
+  strcon_cons
+  (x1, stream_make_filter(fxs, test))
+  else stream_make_filter(fxs, test)()
 )
 
 (* ****** ****** *)

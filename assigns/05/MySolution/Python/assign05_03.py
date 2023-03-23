@@ -76,12 +76,12 @@ def image_invert_color(ximg):
 #     load_color_image("INPUT/towers.jpg")
 balloons = \
     load_color_image("INPUT/balloons.png")
-balloons_invert = \
-    load_color_image("OUTPUT/balloons_invert.png")
-balloons_blurred = \
-    load_color_image("OUTPUT/balloons_blurred.png")
-balloons_energy = \
-    load_color_image("OUTPUT/balloons_energy.png")
+# balloons_invert = \
+#     load_color_image("OUTPUT/balloons_invert.png")
+# balloons_blurred = \
+#     load_color_image("OUTPUT/balloons_blurred.png")
+# balloons_energy = \
+#     load_color_image("OUTPUT/balloons_energy.png")
 #
 ####################################################
 #
@@ -199,19 +199,22 @@ def make_seam_values(energy,ww,hh):
 def remove_best_seam(image):
     ww = image.width
     hh = image.height
+    size = ww * hh
     energy = image_edges_color(image)
     img_list = image.pixlst
     eng_list = list(energy.pixlst)
 
     seamed_e = make_seam_values(eng_list, ww,hh)
-    last_row_min = seamed_e[(ww * hh) - ww][0]
-    loc = (ww * hh) - ww
-    for i in range((ww * hh) - ww, (ww * hh)):
+    last_row_min = seamed_e[size - ww][0]
+    loc = size - ww
+    for i in range(size - ww, size):
+        print(seamed_e[i][0])
         if seamed_e[i][0] < last_row_min:
             last_row_min = seamed_e[i][0]
             loc = i
 
-    row = hh
+    # print(last_row_min)
+    row = hh - 1
     to_be_removed = []
 
     while row >= 0:
@@ -226,7 +229,7 @@ def remove_best_seam(image):
             loc = (loc-ww)+1
         row = row - 1
 
-    # energy = imgvec.image(hh, ww-1, imgvec.image_i2filter_pylist(energy, lambda i0, j0, _: to_be_removed[i0] != j0))
+    # print(to_be_removed)
     image = imgvec.image(hh, ww-1, imgvec.image_i2filter_pylist(image, lambda i0, j0, _: to_be_removed[i0] != j0))
     # image = imgvec.image(hh, ww, imgvec.image_i2map_pylist\
     #             (image, lambda i0, j0, v0: v0 if to_be_removed[i0] != j0 else (255, 255, 255)))
@@ -252,5 +255,5 @@ def image_seam_carving_color(image, ncol):
 
 
 ####################################################
-# save_color_image(image_seam_carving_color(balloons, 10), "OUTPUT/balloons_seam_white_10.png")
+save_color_image(image_seam_carving_color(balloons, 1), "OUTPUT/balloons_seam_1.png")
 ####################################################

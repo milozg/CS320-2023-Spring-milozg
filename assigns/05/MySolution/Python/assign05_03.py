@@ -163,7 +163,7 @@ def best_energy_pixel(energy,i, ww):
         center = energy[i] + energy[i-ww][0]
         right = energy[i] + energy[(i-ww)+1][0]
 
-        if center < right:
+        if center <= right:
             energy[i] = (center,0)
         else:
             energy[i] = (right,1)
@@ -182,12 +182,12 @@ def best_energy_pixel(energy,i, ww):
         center = energy[i] + energy[i-ww][0]
         right = energy[i] + energy[(i-ww)+1][0]
 
-        if center < right and center < left:
-            energy[i] = (center,0)
-        elif right < left:
-            energy[i] = (right,1)
-        else:
+        if left <= right and left <= center:
             energy[i] = (left,-1)
+        elif center <= right:
+            energy[i] = (center,0)
+        else:
+            energy[i] = (right,1)
 
     return None
 
@@ -208,12 +208,10 @@ def remove_best_seam(image):
     last_row_min = seamed_e[size - ww][0]
     loc = size - ww
     for i in range(size - ww, size):
-        print(seamed_e[i][0])
         if seamed_e[i][0] < last_row_min:
             last_row_min = seamed_e[i][0]
             loc = i
 
-    # print(last_row_min)
     row = hh - 1
     to_be_removed = []
 
@@ -229,10 +227,7 @@ def remove_best_seam(image):
             loc = (loc-ww)+1
         row = row - 1
 
-    # print(to_be_removed)
     image = imgvec.image(hh, ww-1, imgvec.image_i2filter_pylist(image, lambda i0, j0, _: to_be_removed[i0] != j0))
-    # image = imgvec.image(hh, ww, imgvec.image_i2map_pylist\
-    #             (image, lambda i0, j0, v0: v0 if to_be_removed[i0] != j0 else (255, 255, 255)))
 
     return image
 
@@ -255,5 +250,5 @@ def image_seam_carving_color(image, ncol):
 
 
 ####################################################
-save_color_image(image_seam_carving_color(balloons, 1), "OUTPUT/balloons_seam_1.png")
+save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_100.png")
 ####################################################

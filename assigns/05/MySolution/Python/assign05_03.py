@@ -74,8 +74,8 @@ def image_invert_color(ximg):
 #
 # towers = \
 #     load_color_image("INPUT/towers.jpg")
-balloons = \
-    load_color_image("INPUT/balloons.png")
+# balloons = \
+#     load_color_image("INPUT/balloons.png")
 # balloons_invert = \
 #     load_color_image("OUTPUT/balloons_invert.png")
 # balloons_blurred = \
@@ -250,5 +250,5 @@ def image_seam_carving_color(image, ncol):
 
 
 ####################################################
-save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_100.png")
+# save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_100.png")
 ####################################################

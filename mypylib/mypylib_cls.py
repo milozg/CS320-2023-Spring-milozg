@@ -120,15 +120,19 @@ def fnlist_foreach(xs, work_func):
     return None
 
 ####################################################
-def fnlist_reverse(xs):
-    return \
-        fnlist_foldleft \
-        (xs, fnlist_nil(), lambda r0, x0: fnlist_cons(x0, r0))
-####################################################
 def fnlist_append(xs, ys):
     return fnlist_foldright(xs, ys, fnlist_cons)
 def fnlist_concat(xss):
     return fnlist_foldright(xss, fnlist_nil(), fnlist_append)
+####################################################
+def fnlist_rappend(xs, ys):
+    while(xs.ctag > 0):
+        x1 = xs.cons1
+        xs = xs.cons2
+        ys = fnlist_cons(x1, ys)
+    return ys
+def fnlist_reverse(xs):
+    return fnlist_rappend(xs, fnlist_nil())
 ####################################################
 def fnlist_foldleft(xs, ini, fopr_func):
     return \
@@ -150,6 +154,9 @@ def fnlist_rpylistize(xs):
 
 def fnlist_make_pylist(xs): return pylist_fnlistize(xs)
 
+def fnlist_filter_pylist(xs, test_func):
+    return foreach_to_filter_pylist(fnlist_foreach)(xs, test_func)
+
 ###########################################################################
 
 def pylist_foreach(xs, work_func):
@@ -167,7 +174,7 @@ def pylist_make_map(xs, fopr_func):
 def pylist_map_pylist(xs, fopr_func):
     return foreach_to_map_pylist(pylist_foreach)(xs, fopr_func)
 
-def pylist_filter(xs, test_func):
+def pylist_make_filter(xs, test_func):
     return foreach_to_filter_pylist(pylist_foreach)(xs, test_func)
 def pylist_filter_pylist(xs, test_func):
     return foreach_to_filter_pylist(pylist_foreach)(xs, test_func)
@@ -551,10 +558,29 @@ def stream_foreach(fxs, work):
         # end-of-(if(cxs.ctag==0)-then-else)
     return None # end-of-(stream_foreach)
 
+def stream_get_at(fxs, i0):
+    while(True):
+        cxs = fxs()
+        if (cxs.ctag == 0):
+            raise IndexError
+        else:
+            if i0 <= 0:
+                return cxs.cons1
+            else:
+                i0 = i0 - 1
+                fxs = cxs.cons2
+    return None # This is deadcode
+
+###########################################################################
+
 def stream_forall(fxs, test):
-    foreach_to_forall(stream_foreach)(fxs, test)
+    return foreach_to_forall(stream_foreach)(fxs, test)
+
 def stream_iforall(fxs, itest):
-    foreach_to_iforall(stream_foreach)(fxs, itest)
+    return foreach_to_iforall(stream_foreach)(fxs, itest)
+
+def stream_iforeach(fxs, iwork):
+    return foreach_to_iforeach(stream_foreach)(fxs, iwork)
 
 ###########################################################################
 
@@ -602,8 +628,25 @@ def stream_make_map(fxs, fopr):
         if cxs.ctag == 0:
             return strcon_nil()
         else:
-            return strcon_cons(fopr(cxs.cons1), lambda: helper(cxs.cons2))
+            return strcon_cons\
+                (fopr(cxs.cons1), lambda: helper(cxs.cons2))
         # end-of-(if(cxs.ctag==0)-then-else)
+    return lambda: helper(fxs)
+
+###########################################################################
+
+def stream_make_filter(fxs, test):
+    def helper(fxs):
+        while(True):
+            cxs = fxs()
+            if cxs.ctag == 0:
+                return strcon_nil()
+            else:
+                cx1 = cxs.cons1
+                fxs = cxs.cons2
+                if test(cx1):
+                    return strcon_cons(cx1, lambda: helper(fxs))
+            # end-of-(if(cxs.ctag==0)-then-else)
     return lambda: helper(fxs)
 
 ###########################################################################

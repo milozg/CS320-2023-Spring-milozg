@@ -13,6 +13,8 @@ if i1+j1 < i2+j2.
 
 (* ****** ****** *)
 
+
+
 (*
 val theNatPairs: (int*int) stream = fn () => ...
 *)

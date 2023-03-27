@@ -1,6 +1,9 @@
 (* ****** ****** *)
 use
 "./../../../../mysmlib/mysmlib-cls.sml";
+
+use
+"./../../../../mysmlib/mysmlib-ind.sml";
 (* ****** ****** *)
 
 (*
@@ -19,9 +22,22 @@ And so on, and so forth
 
 (* ****** ****** *)
 
-(*
-val the_ln2_stream: real stream = fn() => ...
-*)
+val get_sum_at : int -> real =
+    fn(n) => int1_foldleft(n, 0.0, fn(r,i) => if i = 0 then
+                                                1.0
+                                              else if (i+1) mod 2 = 0 then
+                                                r - 1.0/Real.fromInt(i+1)
+                                              else
+                                                r + 1.0/Real.fromInt(i+1))
+
+
+(* Used a stream tabulate I implemented in my library that
+is the exact same as the one on the class library, but
+it lets you include a start point for the function rather
+than just using 0 *)
+val the_ln2_stream: real stream =
+    stream_tabulate_start(~1, 1, fn(i) => get_sum_at(i))
+
 
 (* ****** ****** *)
 

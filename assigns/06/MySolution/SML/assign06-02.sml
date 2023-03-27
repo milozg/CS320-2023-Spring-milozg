@@ -13,11 +13,13 @@ if i1+j1 < i2+j2.
 
 (* ****** ****** *)
 
+fun mini_stream(n : int): (int*int) stream =
+    stream_tabulate(n+1, fn (i) => (i,n-i))
 
 
-(*
-val theNatPairs: (int*int) stream = fn () => ...
-*)
+val theNatPairs: (int*int) stream =
+    stream_concat(stream_tabulate(~1, fn(i) => mini_stream(i)))
+
 
 (* ****** ****** *)
 

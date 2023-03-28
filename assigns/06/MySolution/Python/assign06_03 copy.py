@@ -34,34 +34,35 @@ def board_safety_one(bd, i0):
     return int1_forall(i0, helper)
 ####################################################
 
-# def set_board(bd,i0,j0):
-#     lst = list(bd)
-#     lst[i0] = j0
-#     return tuple(lst)
+def set_board(bd,i0,j0):
+    lst = list(bd)
+    lst[i0] = j0
+    return tuple(lst)
 
-# def get_childs(bd,bdSize):
-#     return int1_foldleft(bdSize, fnlist_nil(), lambda r,n: fnlist_cons(set_board(bd,nqueen(bd),n),r))
+def check_board_set(bd,i0,j0):
+    return board_safety_one(set_board(bd,i0,j0),i0)
 
-# def gtree_dfs(bds,bdSize):
-#     if fnlist.get_ctag(bds) == 0:
-#         return strcon_nil()
-#     else:
-#         c1 = fnlist_cons.get_cons1(bds)
-#         c2 = fnlist_cons.get_cons2(bds)
-#         return\
-#             strcon_cons(c1,gtree_dfs(fnlist_append(get_childs(c1,bdSize),c2),bdSize))
-
-def gtree_dfs(nxs, fchildren):
-    def helper(nodes):
-        if nodes.empty():
-            return strcon_nil()
+def get_safe_childs(bd,bdSize):
+    def helper(r,n):
+        if check_board_set(bd,nqueen(bd),n):
+            return fnlist_cons(set_board(bd,nqueen(bd),n),r)
         else:
-            curr = nodes.get()
-            for bd in fchildren(curr)
-                nodes.put(bd)
-            return strcon_cons(c1,helper(nodes,fchildren))
+            return r
 
-    return lambda: helper(nxs)
+    return int1_foldleft(bdSize, fnlist_nil(), lambda r,n: helper(r,n))
+
+def gtree_dfs(bds,bdSize):
+    if fnlist.get_ctag(bds) == 0:
+        return strcon_nil()
+    else:
+        c1 = fnlist_cons.get_cons1(bds)
+        c2 = fnlist_cons.get_cons2(bds)
+        if board_safety_all(c1) and nqueen(c1) == bdSize:
+            return\
+            strcon_cons(c1,gtree_dfs(fnlist_append(c2,get_safe_childs(c1,bdSize)),bdSize))
+        else:
+            return\
+            gtree_dfs(fnlist_append(c2,get_safe_childs(c1,bdSize)),bdSize)
 
 def solve_N_queen_puzzle(N):
     """
@@ -85,7 +86,7 @@ def solve_N_queen_puzzle(N):
     that no queen piece on the board can catch any other ones
     on the same board.
     """
-    # init_board = (-1,) * N
-    # return lambda: stream_make_filter(gtree_dfs(fnlist_sing(init_board),N), lambda bd: board_safety_all(bd) and nqueen(bd) == N)
+    init_board = (-1,) * N
+    return lambda:gtree_dfs(fnlist_sing(init_board),N)
 
 ####################################################

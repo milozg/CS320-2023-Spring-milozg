@@ -2,6 +2,7 @@
 #!/usr/bin/env python3
 ####################################################
 import sys
+import queue
 sys.path.append('./../../../../mypylib')
 from mypylib_cls import *
 ####################################################
@@ -34,33 +35,35 @@ def board_safety_one(bd, i0):
     return int1_forall(i0, helper)
 ####################################################
 
-# def set_board(bd,i0,j0):
-#     lst = list(bd)
-#     lst[i0] = j0
-#     return tuple(lst)
+def poss_checker(bd,i0,j0):
+    def helper(k0):
+        pk = bd[k0]
+        return pk != j0 and abs(i0-k0) != abs(j0-pk)
+    return int1_forall(i0, helper)
 
-# def get_childs(bd,bdSize):
-#     return int1_foldleft(bdSize, fnlist_nil(), lambda r,n: fnlist_cons(set_board(bd,nqueen(bd),n),r))
+def set_board(bd,i0,j0):
+    lst = list(bd)
+    lst[i0] = j0
+    return tuple(lst)
 
-# def gtree_dfs(bds,bdSize):
-#     if fnlist.get_ctag(bds) == 0:
-#         return strcon_nil()
-#     else:
-#         c1 = fnlist_cons.get_cons1(bds)
-#         c2 = fnlist_cons.get_cons2(bds)
-#         return\
-#             strcon_cons(c1,gtree_dfs(fnlist_append(get_childs(c1,bdSize),c2),bdSize))
+def children(node, size, q):
+    nqueen_curr = nqueen(node)
+    def helper(j):
+        if poss_checker(node,nqueen_curr,j):
+            temp_bd = set_board(node,nqueen_curr,j)
+            q.put(temp_bd)
+        return None
+    int1_foreach(size, lambda i: helper(i))
+    return None
 
-def gtree_dfs(nxs, fchildren):
+def gtree_dfs(nxs, fchildren, size):
     def helper(nodes):
         if nodes.empty():
             return strcon_nil()
         else:
             curr = nodes.get()
-            for bd in fchildren(curr)
-                nodes.put(bd)
-            return strcon_cons(c1,helper(nodes,fchildren))
-
+            fchildren(curr,size,nodes)
+            return strcon_cons(curr,lambda: helper(nodes))
     return lambda: helper(nxs)
 
 def solve_N_queen_puzzle(N):
@@ -85,7 +88,8 @@ def solve_N_queen_puzzle(N):
     that no queen piece on the board can catch any other ones
     on the same board.
     """
-    # init_board = (-1,) * N
-    # return lambda: stream_make_filter(gtree_dfs(fnlist_sing(init_board),N), lambda bd: board_safety_all(bd) and nqueen(bd) == N)
+    q1 = queue.LifoQueue()
+    q1.put((0,) * N)
+    return stream_make_filter(gtree_dfs(q1,children,N), lambda bd: nqueen(bd) == N)
 
 ####################################################

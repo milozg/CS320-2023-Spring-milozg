@@ -52,8 +52,7 @@ def children(node, size, q):
         if poss_checker(node,nqueen_curr,j):
             temp_bd = set_board(node,nqueen_curr,j)
             q.put(temp_bd)
-        return None
-    int1_foreach(size, lambda i: helper(i))
+    int1_foreach(size + 1, lambda i: () if i == 0 else helper(i))
     return None
 
 def gtree_dfs(nxs, fchildren, size):
@@ -63,7 +62,7 @@ def gtree_dfs(nxs, fchildren, size):
         else:
             curr = nodes.get()
             fchildren(curr,size,nodes)
-            return strcon_cons(curr,lambda: helper(nodes))
+            return strcon_cons(curr, lambda: helper(nodes))
     return lambda: helper(nxs)
 
 def solve_N_queen_puzzle(N):

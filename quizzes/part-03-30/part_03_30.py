@@ -54,7 +54,7 @@ def image_vreflect(image):
     return \
         imgvec.image_make_i2map\
         (image, \
-         lambda i0, j0, v0: imgvec.image_get_pixel(image, (i0+hh)%hh, j0))
+         lambda i0, j0, v0: imgvec.image_get_pixel(image, i0//(hh-i0), j0))
 ####################################################
 balloons = \
     load_color_image\

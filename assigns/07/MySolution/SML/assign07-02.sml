@@ -46,7 +46,7 @@ fun cube(n : int) : int =
 fun first_level_stream(n : int) : (int * int) stream =
     stream_tabulate_from(~1, n, fn(i) => (n,i))
 
-val
+(* val
 theNatPairs_cubesum: (int * int) stream =
     let
         fun help(n : int) : (int * int) stream =
@@ -55,7 +55,7 @@ theNatPairs_cubesum: (int * int) stream =
                         )
     in
         help(0)
-    end
+    end *)
 
 
 (* end of [CS320-2023-Spring-assign07-02.sml] *)

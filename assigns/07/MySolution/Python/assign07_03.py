@@ -2,6 +2,7 @@
 #!/usr/bin/env python3
 ####################################################
 import sys
+import queue
 ####################################################
 sys.path.append('../../../07')
 sys.path.append('./../../../../mypylib')
@@ -31,6 +32,8 @@ http://ats-lang.github.io/EXAMPLE/BUCS320/Doublets/Doublets.html
 ######
 """
 ####################################################
+
+
 def doublet_bfs_test(w1, w2):
     """
     Given two words w1 and w2, this function should
@@ -38,5 +41,5 @@ def doublet_bfs_test(w1, w2):
     it returns a path connecting w1 and w2 that attests to the
     two words forming a doublet.
     """
-    raise NotImplementedError
+
 ####################################################

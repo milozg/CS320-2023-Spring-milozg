@@ -70,9 +70,29 @@ end (* end of [char_of_digit] *)
 (* ****** ****** *)
 
 fun
-print_int(x: int) = print(Int.toString(x))
+print_int
+(x: int) = print(Int.toString(x))
 fun
-print_char(c: char) = print(String.str(c))
+print_char
+(c: char) = print( String.str(c) )
+
+(* ****** ****** *)
+fun
+print_bool
+(x: bool) = print(Bool.toString(x))
+(* ****** ****** *)
+
+fun
+print_string(cs: string) = print(cs)
+
+(* ****** ****** *)
+
+fun
+print_newline() = print("\n")
+fun
+println(cs) = (print(cs); print_newline())
+fun
+println_string(cs) = (print(cs); print_newline())
 
 (* ****** ****** *)
 
@@ -1028,6 +1048,34 @@ strcon_cons(x1, helper(fxs, i0+1)) in helper(fxs, 0)()
 (* ****** ****** *)
 end (* end-of-[stream_make_ifilter(fxs, ifopr)] *)
 
+(* ****** ****** *)
+(*
+HX-2023-04-04:
+For merging two ordered streams
+*)
+fun
+stream_merge2
+( fxs1: 'a stream
+, fxs2: 'a stream
+, lte3: 'a * 'a -> bool): 'a stream = fn() =>
+(
+case fxs1() of
+  strcon_nil => fxs2()
+| strcon_cons(x1, fxs1) =>
+(
+case fxs2() of
+strcon_nil =>
+strcon_cons(x1, fxs1)
+|
+strcon_cons(x2, fxs2) =>
+if
+lte3(x1, x2)
+then strcon_cons
+(x1, stream_merge2(fxs1, stream_cons(x2, fxs2), lte3))
+else strcon_cons
+(x2, stream_merge2(stream_cons(x1, fxs1), fxs2, lte3))
+)
+)
 (* ****** ****** *)
 
 (* end of [BUCASCS320-2023-Spring-mysmlib-cls.sml] *)

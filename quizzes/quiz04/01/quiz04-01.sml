@@ -2,9 +2,12 @@
 use "./../../../mysmlib/mysmlib-cls.sml";
 (* ****** ****** *)
 
-(*
-Please put your implementation here for quiz04-01
-*)
+val
+theAlphabet =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+fun alphabeta_cycling_list(): char stream = fn() =>
+    stream_append(string_streamize(theAlphabet), alphabeta_cycling_list())()
 
 (* ****** ****** *)
 

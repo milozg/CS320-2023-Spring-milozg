@@ -2,9 +2,8 @@
 use "./../../../mysmlib/mysmlib-cls.sml";
 (* ****** ****** *)
 
-(*
-Please put your implementation here for quiz04-02
-*)
+fun stream_dupremov(fxs : int stream) : int stream =
+    stream_make_ifilter(fxs, fn(i, n) => i = 0 orelse n <> stream_get_at(fxs, i-1))
 
 (* ****** ****** *)
 

@@ -16,6 +16,21 @@ stream_permute_list(xs: 'a list): 'a list stream = ...
 //
 *)
 
-(* ****** ****** *)
+fun interLeave(curr : 'a, xs : 'a list): 'a list stream = fn() =>
+(
+    case (curr,xs) of
+        (x,[]) => strcon_cons([x], stream_nil())
+    |(x,(h :: t)) => strcon_cons((x::h::t), stream_make_map(interLeave(x,t), fn(l) => h :: l))
+)
+
+fun stream_permute_list(xs: 'a list): 'a list stream =
+(
+    case xs of
+        [] => stream_cons([], stream_nil())
+    |x :: xs => stream_concat(stream_make_map(stream_permute_list(xs), fn(l) => interLeave(x,l)))
+)
+
+
+
 
 (* end of [CS320-2023-Spring-assign08-01.sml] *)

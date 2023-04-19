@@ -1,6 +1,10 @@
 ########################
 # HX-2023-04-15: 10 points
 ########################
+import sys
+sys.path.append('./../../../../mypylib')
+from mypylib_cls import *
+
 """
 Given two words w1 and w2 of the same length,
 please implement a function wordle_hint(w1, w2)
@@ -28,5 +32,27 @@ wordle_hint(w1, w2) =
 """
 ########################################################################
 def wordle_hint(w1, w2):
-    raise NotImplementedError
+    marks = [~1] * len(w1)
+    word_cs = list(w1)
+    guess_cs = list(w2)
+
+    for i,c in enumerate(w2):
+        if c == w1[i]:
+            marks[i] = 1
+            guess_cs[i] = 0
+            word_cs.remove(c)
+
+    for i,c0 in enumerate(guess_cs):
+        if c0 != 0:
+            if c0 in word_cs:
+                marks[i] = 2
+                guess_cs[i] = 0
+                word_cs.remove(c0)
+            else:
+                marks[i] = 0
+
+    return string_imap_pylist(w2, lambda i,c: (marks[i],c))
+
+
+
 ########################################################################

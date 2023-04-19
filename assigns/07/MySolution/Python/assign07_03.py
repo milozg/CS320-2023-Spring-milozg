@@ -48,4 +48,6 @@ def doublet_bfs_test(w1, w2):
         return None
     else:
         return filt.get_cons1()
+
+print(doublet_bfs_test("team", "club"))
 ####################################################

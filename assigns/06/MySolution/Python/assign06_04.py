@@ -90,5 +90,5 @@ def doublet_stream_from(word):
     initq.put((word,))
     return doublet_bfs(initq,children)
 
-# stream_iforall(doublet_stream_from("horse"), lambda i,x: i < 300 and not print(x))
+# stream_iforall(doublet_stream_from("team"), lambda i,x: i < 300 and not print(x))
 ####################################################

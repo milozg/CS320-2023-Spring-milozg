@@ -12,7 +12,7 @@ is of the so-called continuation-passing style (CPS)
 
 (* ****** ****** *)
 
-(*
+
 fun
 list_merge2
 (xs1: int list
@@ -31,16 +31,21 @@ case xs2 of
   else x2 :: list_merge2(x1 :: xs1, xs2)
 )
 )
-*)
+
 
 (* ****** ****** *)
 
-(*
-fun
-list_kmerge2
-(xs1: int list
-,xs2: int list, ret: int list -> 'a): 'a = ...
-*)
+
+fun list_kmerge2 (xs1: int list, xs2: int list, ret: int list -> 'a): 'a =
+    case xs1 of
+        [] => ret(xs2)
+    | x1 :: xs1 => case xs2 of
+                    [] => ret(x1::xs1)
+                |x2 :: xs2 => if x1 <=x2 then
+                                list_kmerge2(xs1, x2 :: xs2, fn res => ret(x1 :: res))
+                              else
+                                list_kmerge2(x1 :: xs1, xs2, fn res => ret(x2 :: res))
+
 
 (* ****** ****** *)
 

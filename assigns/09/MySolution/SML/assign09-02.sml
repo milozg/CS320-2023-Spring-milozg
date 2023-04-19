@@ -33,6 +33,9 @@ fgenerator_make_stream(fxs: 'a stream): 'a fgenerator = ...
 //
 *)
 
+fun fgenerator_make_stream(fxs: 'a stream): 'a fgenerator =
+    
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assigns-assign09-02.sml] *)

@@ -23,19 +23,18 @@ first n elements of fxs.
 
 (* ****** ****** *)
 
-(*
-fun
-stream_take
-(fxs: 'a stream, n: int): 'a stream = ...
-*)
+
+fun stream_take (fxs: 'a stream, n: int): 'a stream =
+    stream_make_ifilter(fxs, fn(i,_) => i < n)
+
+
 
 (* ****** ****** *)
 
-(*
-fun
-stream_drop
-(fxs: 'a stream, n: int): 'a stream = ...
-*)
+
+fun stream_drop (fxs: 'a stream, n: int): 'a stream =
+    stream_make_ifilter(fxs, fn(i,_) => i >= n)
+
 
 (* ****** ****** *)
 

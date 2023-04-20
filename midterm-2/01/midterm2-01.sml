@@ -23,12 +23,22 @@ Then we have ln2 = stream_evaluate(fxs, 1.0) // see Assign06-01
 *)
 
 (* ****** ****** *)
-
-(*
 fun
-stream_evaluate
-(fxs: real stream, x0: real): real stream = ...
-*)
+pow_real_real
+(x: real, y: real): real =
+if y <= 0.0
+then 1.0 else x * pow_real_real(x, y-1.0)
+
+fun sum_n(fxs : real stream, n : int): real =
+    int1_foldleft(n+1, 0.0, fn(r, i) => r + stream_get_at(fxs,i))
+
+fun stream_evaluate (fxs: real stream, x0: real): real stream =
+    let
+        val enums = stream_make_imap(fxs, fn(i,a) => a*(pow_real_real(x0,Real.fromInt(i))))
+    in
+        stream_tabulate(~1, fn(i) => sum_n(enums, i))
+    end
+
 
 (* ****** ****** *)
 

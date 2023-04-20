@@ -21,10 +21,37 @@ For instance, [1,2,3,4] does not capture '231'
 
 (* ****** ****** *)
 
-(*
-fun
-perm_capture_231(xs: int list): bool = ...
-*)
+fun interLeave(curr : 'a, xs : 'a list): 'a list stream = fn() =>
+(
+    case (curr,xs) of
+        (x,[]) => strcon_cons([x], stream_nil())
+    |(x,(h :: t)) => strcon_cons((x::h::t), interLeave(x,t))
+)
+
+fun stream_permute_list(xs: 'a list): 'a list stream =
+(
+    case xs of
+        [] => stream_cons([], stream_nil())
+    |x :: xs => stream_append(interLeave(x,xs), stream_permute_list(xs))
+)
+
+(* ****** ****** *)
+
+fun test(xs : int list) : bool =
+    let
+        val [x,y,z] = xs
+    in
+        x < y andalso y < z
+    end
+
+fun perm_capture_231(xs: int list) : bool =
+    let
+        fun help(xs: int list) : int list stream =
+            stream_make_filter(stream_permute_list(xs), fn(x) => ((list_length(x) = 3) andalso test(x)))
+    in
+        stream_length(help(xs)) > 0
+    end
+
 
 (* ****** ****** *)
 

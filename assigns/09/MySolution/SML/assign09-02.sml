@@ -34,7 +34,22 @@ fgenerator_make_stream(fxs: 'a stream): 'a fgenerator = ...
 *)
 
 fun fgenerator_make_stream(fxs: 'a stream): 'a fgenerator =
-    
+    let
+        fun help(fxs, ret0, cret): 'a option =
+            case fxs() of
+                strcon_nil => let
+                                val() = generator_yield(NONE, ret0, cret)
+                              in
+                                NONE
+                              end
+            |strcon_cons(x1,fxs) => let
+                                        val() = generator_yield(SOME(x1), ret0, cret)
+                                    in
+                                        help(fxs, ret0, cret)
+                                    end
+    in
+        generator_make_fun(fn(ret0,cret) => help(fxs, ret0, cret))
+    end
 
 (* ****** ****** *)
 

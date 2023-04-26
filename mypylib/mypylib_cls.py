@@ -104,7 +104,7 @@ def fnlist_print(xs):
     print("[",end='')
     while(xs.ctag > 0):
         if (nx > 0):
-            print(sep,end='')        
+            print(sep,end='')
         print(xs.cons1,end='')
         nx = nx + 1; xs = xs.cons2
     print("]", end='')
@@ -218,7 +218,7 @@ def pylist_ifilter_pylist(xs, itest_func):
 
 def pylist_iminimum(xs):
     if not xs:
-        return (-1, None)    
+        return (-1, None)
     imin = 0
     xmin = xs[0]
     for (i0, x1) in enumerate(xs[1:]):
@@ -229,7 +229,7 @@ def pylist_iminimum(xs):
 
 def pylist_imaximum(xs):
     if not xs:
-        return (-1, None)    
+        return (-1, None)
     imax = 0
     xmax = xs[0]
     for (i0, x1) in enumerate(xs[1:]):
@@ -610,7 +610,7 @@ def stream_tabulate(n0, fopr):
     else:
         return lambda: helper2(0)
     # end-of-(if(n0 < 0)-then-else)
-    
+
 ###########################################################################
 
 def string_streamize(xs):
@@ -730,7 +730,7 @@ def graph_dfs(nxs, fnexts):
     qnxs = queue.LifoQueue()
     for nx0 in nxs:
         qnxs.put(nx0)
-        visited.add(nx1)
+        visited.add(nx0)
     return lambda: helper(qnxs)
 
 ###########################################################################
@@ -826,7 +826,7 @@ def stream_of_generator(xs):
         except StopIteration:
             return strcon_nil()
     return lambda: strcon()
-    
+
 ###########################################################################
 
 ######################### end of [mypylib-cls.py] #########################

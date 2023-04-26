@@ -54,7 +54,7 @@ def wordle_guess(hints):
     def word_is_safe(wd):
         wd_list = list(wd)
         def pos_safe(s):
-            return foreach_to_iforall(string_foreach)(s, lambda i,c: (not (i,c) in twos) and (c in bank))
+            return foreach_to_iforall(string_foreach)(s, lambda i,c: (not (i,c) in twos) and (c != '$'))
         def count_safe(l):
             res = True
             for c in twos_cnt:
@@ -81,5 +81,5 @@ def wordle_guess(hints):
         return guess
 
 
-print(wordle_guess([[(2,'l'),(2,'a'),(2,'a'),(2,'e'),(2,'l')]]))
+print(wordle_guess([[(2,'l'),(0,'a'),(1,'a'),(2,'e'),(2,'l')]]))
 ########################################################################

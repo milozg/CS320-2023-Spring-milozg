@@ -14,12 +14,6 @@ word as the player's guess.
 def replace_str(str, i, replacement):
     return str[:i] + replacement + str[i + 1:]
 
-def dec_dict(d,k):
-    if d[k] > 1:
-        d[k] -= 1
-    else:
-        del d[k]
-
 def wordle_guess(hints):
     guess = "$" * len(hints[0])
     bank = list("abcdefghijklmnopqrstuvwxyz")

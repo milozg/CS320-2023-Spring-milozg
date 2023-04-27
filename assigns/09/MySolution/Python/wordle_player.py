@@ -10,61 +10,55 @@ Given a history of wordle hints, this function returns a
 word as the player's guess.
 """
 
-########################################################################
-def graph_dfs(nxs, fnexts):
-    visited = set()
-    def helper(qnxs):
-        if qnxs.empty():
-            return strcon_nil()
-        else:
-            nx1 = qnxs.get()
-            # print("gtree_dfs: helper: nx1 = ", nx1)
-            for nx2 in reversed(fnexts(nx1)):
-                if not nx2 in visited:
-                    qnxs.put(nx2)
-                    visited.add(nx2)
-            return strcon_cons(nx1, lambda: helper(qnxs))
-        # end-of-(if(qnxs.empty())-then-else)
-    qnxs = queue.LifoQueue()
-    for nx0 in nxs:
-        qnxs.put(nx0)
-        visited.add(nx0)
-    return lambda: helper(qnxs)
-
+#######################################################################
 def replace_str(str, i, replacement):
     return str[:i] + replacement + str[i + 1:]
+
+def dec_dict(d,k):
+    if d[k] > 1:
+        d[k] -= 1
+    else:
+        del d[k]
 
 def wordle_guess(hints):
     guess = "$" * len(hints[0])
     bank = list("abcdefghijklmnopqrstuvwxyz")
     twos = set()
-    twos_cnt = []
+    counts = dict()
 
     for hint in hints:
+        word = pylist_make_map(pylist_make_filter(hint, lambda x: x[0] != 0), lambda x: x[1])
+        count_in_word = {x:word.count(x) for x in word}
+
+        for k in count_in_word:
+            if k not in counts or count_in_word[k] > counts[k]:
+                counts[k] = count_in_word[k]
+
         for i,c in enumerate(hint):
             if c[0] == 1:
                 guess = replace_str(guess,i,c[1])
             elif c[0] == 2:
-                twos.add((i,c[1]))
-                twos_cnt += c[1]
-            else:
-                if c[1] in bank:
-                    bank.remove(c[1])
+                    twos.add((i,c[1]))
+
+    for i,c in enumerate(hint):
+        if c[0] == 0:
+            if c[1] not in counts:
+                bank.remove(c[1])
 
     def word_is_safe(wd):
-        wd_list = list(wd)
         def pos_safe(s):
             return foreach_to_iforall(string_foreach)(s, lambda i,c: (not (i,c) in twos))
-        def count_safe(l):
+
+        def count_safe(d, s):
+            wd_list = list(s)
+            count_in_word = {x:wd_list.count(x) for x in wd_list}
             res = True
-            for c in twos_cnt:
-                if c in l:
-                    l.remove(c)
-                else:
-                    res = False
-                    break
+            for k in d:
+                if not ((k in count_in_word) and count_in_word[k] == d[k]):
+                    res =  False
             return res
-        return pos_safe(wd) and count_safe(wd_list) and (not '$' in wd)
+
+        return pos_safe(wd) and count_safe(counts,wd) and (not '$' in wd)
 
     def nexts(nx1):
         childs = []
@@ -81,5 +75,23 @@ def wordle_guess(hints):
         return guess
 
 
-print(wordle_guess([[(2,'l'),(0,'a'),(1,'a'),(2,'e'),(2,'l')]]))
+
+print(wordle_guess([[(2,'l'),(2,'a'),(2,'t'),(2,'e'),(2,'r')]]))
+
+# myhint0 = \
+#     [(0, 'l'), (2, 'i'), (0, 's'), (0, 't'), (2, 'e'), (2, 'n')]
+# myhint1 = \
+#     [(0, 's'), (2, 'i'), (0, 'l'), (1, 'e'), (1, 'n'), (0, 't')]
+# myhint2 = \
+#     [(0, 'b'), (1, 'r'), (2, 'e'), (0, 'a'), (0, 'c'), (0, 'h')]
+# myhint3 = \
+#     [(0, 'p'), (0, 'l'), (2, 'e'), (2, 'n'), (0, 't'), (0, 'y')]
+# myhint4 = \
+#     [(0, 'm'), (0, 'o'), (0, 'u'), (0, 't'), (0, 'h'), (0, 'y')]
+# myhint5 = \
+#     [(1, 'f'), (0, 'l'), (0, 'a'), (0, 's'), (0, 'h'), (0, 'y')]
+# myhints = \
+#     [myhint0, myhint1, myhint2, myhint3, myhint4, myhint5]
+#
+# print(wordle_guess(myhints))
 ########################################################################

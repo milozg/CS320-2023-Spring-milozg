@@ -76,7 +76,7 @@ def wordle_guess(hints):
 
 
 
-print(wordle_guess([[(2,'l'),(2,'a'),(2,'t'),(2,'e'),(2,'r')]]))
+# print(wordle_guess([[(2,'l'),(2,'a'),(2,'t'),(2,'e'),(2,'r')]]))
 
 # myhint0 = \
 #     [(0, 'l'), (2, 'i'), (0, 's'), (0, 't'), (2, 'e'), (2, 'n')]

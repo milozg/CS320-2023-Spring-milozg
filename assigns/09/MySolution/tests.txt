@@ -323,4 +323,7 @@ val ans1 = true : bool
 val ans2 = false : bool
 
 Assign09-03-test passed!
+myguess =  iltsne
+myguess =  spring
+myguess =  chrysanthemum
 Assign09-04-test passed!

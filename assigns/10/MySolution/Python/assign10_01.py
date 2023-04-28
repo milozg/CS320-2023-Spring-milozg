@@ -17,6 +17,9 @@ import kervec
 import imgvec
 ####################################################
 from PIL import Image
+
+import sys
+sys.setrecursionlimit(1500)
 ####################################################
 
 def load_color_image(filename):
@@ -166,7 +169,16 @@ def image_seam_carving_1col_color(image):
     hh = image.height
     energy = image_edges_color(image)
     ################################################
-    def cenergy(i0, j0):
+    cenergy_table = {}
+    def cenergy(i0,j0):
+        if (i0,j0) in cenergy_table:
+            return cenergy_table[(i0,j0)]
+        else:
+            res = cenergy_rec(i0,j0)
+            cenergy_table[(i0,j0)] = res
+            return res
+
+    def cenergy_rec(i0, j0):
         evalue = imgvec.image_get_pixel(energy, i0, j0)
         if i0 <= 0:
             return evalue
@@ -195,7 +207,7 @@ def image_seam_carving_1col_color(image):
             elif jmin1 >= ww-1:
                 cmin1 = min(cenergy(i0, jmin1-1), cenergy(i0, jmin1))
             else:
-                cmin1 = min(cenergy(i0, jmin1-1), cenergy(i0, jmin1), cenergy(i0, jmin1+1))                
+                cmin1 = min(cenergy(i0, jmin1-1), cenergy(i0, jmin1), cenergy(i0, jmin1+1))
             if jmin1 <= 0:
                 if cenergy(i0, jmin1) <= cmin1:
                     return jmin1

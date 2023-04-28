@@ -16,8 +16,7 @@ def replace_str(str, i, replacement):
 
 def wordle_guess(hints):
     guess = "$" * len(hints[0])
-    bank = list("abcdefghijklmnopqrstuvwxyz")
-    twos = set()
+    ignore = set()
     counts = dict()
 
     for hint in hints:
@@ -31,17 +30,16 @@ def wordle_guess(hints):
         for i,c in enumerate(hint):
             if c[0] == 1:
                 guess = replace_str(guess,i,c[1])
-            elif c[0] == 2:
-                    twos.add((i,c[1]))
+            else:
+                ignore.add((i,c[1]))
 
-    for i,c in enumerate(hint):
-        if c[0] == 0:
-            if c[1] not in counts:
-                bank.remove(c[1])
+    counts_list = []
+    for k in counts:
+        counts_list += ([k] * counts[k])
 
     def word_is_safe(wd):
         def pos_safe(s):
-            return foreach_to_iforall(string_foreach)(s, lambda i,c: (not (i,c) in twos))
+            return foreach_to_iforall(string_foreach)(s, lambda i,c: (not (i,c) in ignore))
 
         def count_safe(d, s):
             wd_list = list(s)
@@ -58,7 +56,7 @@ def wordle_guess(hints):
         childs = []
         try:
             i = nx1.index('$')
-            return string_imap_pylist(bank, lambda _,c: replace_str(nx1,i,c))
+            return string_imap_pylist(counts_list, lambda _,c: replace_str(nx1,i,c))
         except ValueError:
             return []
 
@@ -68,24 +66,16 @@ def wordle_guess(hints):
     else:
         return guess
 
-
-
-# print(wordle_guess([[(2,'l'),(0,'a'),(2,'t'),(2,'e'),(1,'l')]]))
-
-# myhint0 = \
-#     [(0, 'l'), (2, 'i'), (0, 's'), (0, 't'), (2, 'e'), (2, 'n')]
-# myhint1 = \
-#     [(0, 's'), (2, 'i'), (0, 'l'), (1, 'e'), (1, 'n'), (0, 't')]
-# myhint2 = \
-#     [(0, 'b'), (2, 'r'), (2, 'e'), (0, 'a'), (0, 'c'), (0, 'h')]
-# myhint3 = \
-#     [(0, 'p'), (0, 'l'), (2, 'e'), (2, 'n'), (0, 't'), (0, 'y')]
-# myhint4 = \
-#     [(0, 'm'), (0, 'o'), (0, 'u'), (0, 't'), (0, 'h'), (0, 'y')]
-# myhint5 = \
-#     [(2, 'f'), (0, 'l'), (2, 'd'), (0, 's'), (0, 'h'), (0, 'y')]
 # myhints = \
-#     [myhint0, myhint1, myhint2, myhint3, myhint4, myhint5]
-#
-# print(wordle_guess(myhints))
+#     [[(0, 'a'), (0, 'a'), (0, 'a'), (0, 'a'), (0, 'a'), (1, 'a'), (0, 'a'), (0, 'a'), (0, 'a'), (0, 'a'), (0, 'a'), (0, 'a'), (0, 'a')],
+#      [(0, 'g'), (0, 'v'), (0, 'w'), (2, 'u'), (0, 'g'), (1, 'a'), (0, 'k'), (2, 'y'), (0, 'y'), (2, 'r'), (2, 'c'), (2, 'n'), (0, 'd')],
+#      [(2, 'm'), (2, 'u'), (2, 'c'), (0, 'z'), (2, 'y'), (1, 'a'), (0, 'z'), (0, 'q'), (0, 'x'), (0, 'q'), (2, 'r'), (0, 'z'), (2, 'n')],
+#      [(2, 's'), (2, 'y'), (2, 'm'), (0, 's'), (2, 'r'), (1, 'a'), (2, 'u'), (2, 'n'), (0, 'r'), (0, 'i'), (0, 'l'), (2, 'c'), (0, 'u')],
+#      [(2, 'h'), (0, 'p'), (2, 'u'), (2, 'r'), (1, 's'), (1, 'a'), (2, 'y'), (0, 'o'), (2, 'm'), (1, 'e'), (2, 'n'), (0, 'e'), (2, 'c')],
+#      [(1, 'c'), (0, 'f'), (1, 'r'), (2, 'h'), (1, 's'), (1, 'a'), (0, 'f'), (2, 'u'), (2, 'n'), (1, 'e'), (2, 'y'), (2, 'm'), (0, 'f')],
+#      [(1, 'c'), (2, 'm'), (1, 'r'), (2, 'n'), (1, 's'), (1, 'a'), (2, 'h'), (0, 'm'), (2, 'u'), (1, 'e'), (2, 'h'), (2, 'y'), (1, 'm')],
+#      [(1, 'c'), (1, 'h'), (1, 'r'), (2, 'm'), (1, 's'), (1, 'a'), (2, 't'), (2, 'h'), (2, 'y'), (1, 'e'), (2, 'u'), (2, 'n'), (1, 'm')],]
+# myguess = \
+#     wordle_guess(myhints)
+# print("myguess = ", myguess)
 ########################################################################

@@ -18,7 +18,6 @@ import imgvec
 ####################################################
 from PIL import Image
 
-import sys
 sys.setrecursionlimit(1500)
 ####################################################
 

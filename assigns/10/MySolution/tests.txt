@@ -1,0 +1,16 @@
+(base) crc-dot1x-nat-10-239-8-28:Python milozg$ time python assign10_01_test.py 
+image_seam_carving_color: i0 = 0
+ptotal =  58811238
+Assign10-01-test passed!
+
+real	0m35.510s
+user	0m35.303s
+sys	0m0.144s
+(base) crc-dot1x-nat-10-239-8-28:Python milozg$ time python assign10_01_test2.py 
+image_seam_carving_color: i0 = 0
+ptotal =  58712691
+Assign10-01-test2 passed!
+
+real	0m59.130s
+user	0m58.656s
+sys	0m0.416s
